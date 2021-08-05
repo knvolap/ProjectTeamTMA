@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectTeamTMA.Repository.Interface
 {
-    public interface ICustomerRepository: IGenericRepository<Customer>
+    public interface IUserRepository: IGenericRepository<User>
     {
     }
 }

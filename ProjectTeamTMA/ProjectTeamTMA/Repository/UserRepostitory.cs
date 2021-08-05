@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ProjectTeamTMA.Repository
 {
-    public class CustomerRepostitory:GenericRepository<Customer>
+    public class UserRepostitory:GenericRepository<User>
     {
-        public CustomerRepostitory(MyDBContext context) : base(context)
+        public UserRepostitory(MyDBContext context) : base(context)
         {
         }
 

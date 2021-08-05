@@ -16,27 +16,27 @@ namespace ProjectTeamTMA.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomerController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IIdentityService identityService;
-        private readonly CustomerRepostitory customerRepostitory;
+        private readonly UserRepostitory userRepostitory;
         private readonly IMapper _mapper;
         private MyDBContext myDbContext;
 
-        public CustomerController(IIdentityService identityService, IMapper mapper, MyDBContext _context)
+        public UserController(IIdentityService identityService, IMapper mapper, MyDBContext _context)
         {
             this.identityService = identityService;
             _mapper = mapper;
-            customerRepostitory = new CustomerRepostitory(_context);
+            userRepostitory = new UserRepostitory(_context);
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Customer>>> List2()
+        public async Task<ActionResult<IEnumerable<User>>> List2()
         {
-            var customer1 = await customerRepostitory.ListAsync();
-            IEnumerable<Customer> customers= new List<Customer>();
-            _mapper.Map(customer1, customers);
-            return Ok(customers);
+            var user1 = await userRepostitory.ListAsync();
+            IEnumerable<User> user= new List<User>();
+            _mapper.Map(user1, user);
+            return Ok(user);
         }
 
         [HttpPost]
@@ -51,24 +51,24 @@ namespace ProjectTeamTMA.Controllers
         // POST api/<UserController>
         //[Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> Create(Customer customers)
+        public async Task<IActionResult> Create(User user)
         {
-            Customer customer1 = new Customer();
-            _mapper.Map(customers, customer1);
-            await customerRepostitory.AddAsync(customers);
-            return Ok(customers.IdCustomer);
+            User user1 = new User();
+            _mapper.Map(user, user1);
+            await userRepostitory.AddAsync(user);
+            return Ok(user.userId);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")] //xóa đúng
         public async Task<IActionResult> Delete(int id)
         {
-            Customer customer1 = await customerRepostitory.GetDetailAsync(id);
-            if (customer1 == null)
+            User user1 = await userRepostitory.GetDetailAsync(id);
+            if (user1 == null)
             {
                 return NotFound();
             }
-            await customerRepostitory.DeleteAsync(customer1);
+            await userRepostitory.DeleteAsync(user1);
             return Ok();
         }
     }
