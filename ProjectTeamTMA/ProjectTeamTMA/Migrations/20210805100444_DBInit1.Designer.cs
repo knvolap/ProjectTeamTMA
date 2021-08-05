@@ -10,8 +10,8 @@ using ProjectTeamTMA.DBContexts;
 namespace ProjectTeamTMA.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    [Migration("20210731145429_DBInit")]
-    partial class DBInit
+    [Migration("20210805100444_DBInit1")]
+    partial class DBInit1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,7 @@ namespace ProjectTeamTMA.Migrations
             modelBuilder.Entity("ProjectTeamTMA.Model.BookRoom", b =>
                 {
                     b.Property<int>("bookRoomId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
@@ -67,9 +68,11 @@ namespace ProjectTeamTMA.Migrations
 
                     b.HasIndex("UsersuserId");
 
+                    b.HasIndex("personBookingId");
+
                     b.HasIndex("roomId");
 
-                    b.ToTable("BookRooms");
+                    b.ToTable("BookRoom");
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Building", b =>
@@ -92,7 +95,7 @@ namespace ProjectTeamTMA.Migrations
                     b.HasKey("Id")
                         .HasName("PK_Buildings");
 
-                    b.ToTable("Buildings");
+                    b.ToTable("Building");
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Floor", b =>
@@ -125,7 +128,7 @@ namespace ProjectTeamTMA.Migrations
 
                     b.HasIndex("buildingId");
 
-                    b.ToTable("Floors");
+                    b.ToTable("Floor");
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Role", b =>
@@ -148,14 +151,18 @@ namespace ProjectTeamTMA.Migrations
                     b.HasKey("roleID")
                         .HasName("PK_IdRole");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Room", b =>
                 {
                     b.Property<int>("roomId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("FloorsfloorId")
+                        .HasColumnType("int");
 
                     b.Property<int>("NumberOfBeds")
                         .HasColumnType("int");
@@ -183,9 +190,11 @@ namespace ProjectTeamTMA.Migrations
                     b.HasKey("roomId")
                         .HasName("PK_Customers");
 
+                    b.HasIndex("FloorsfloorId");
+
                     b.HasIndex("floorId");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Room");
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.User", b =>
@@ -230,13 +239,13 @@ namespace ProjectTeamTMA.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.HasKey("userId")
-                        .HasName("PK_Customers");
+                        .HasName("PK_Users");
 
                     b.HasIndex("RolesroleID");
 
                     b.HasIndex("roleId");
 
-                    b.ToTable("Customers");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.BookRoom", b =>
@@ -251,7 +260,7 @@ namespace ProjectTeamTMA.Migrations
 
                     b.HasOne("ProjectTeamTMA.Model.User", null)
                         .WithMany()
-                        .HasForeignKey("bookRoomId")
+                        .HasForeignKey("personBookingId")
                         .HasConstraintName("FK_BookRooms_Users")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -288,13 +297,11 @@ namespace ProjectTeamTMA.Migrations
                 {
                     b.HasOne("ProjectTeamTMA.Model.Floor", "Floors")
                         .WithMany("Rooms")
-                        .HasForeignKey("floorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FloorsfloorId");
 
                     b.HasOne("ProjectTeamTMA.Model.Floor", null)
                         .WithMany()
-                        .HasForeignKey("roomId")
+                        .HasForeignKey("floorId")
                         .HasConstraintName("FK_Rooms_Roles")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();

@@ -21,14 +21,10 @@ namespace ProjectTeamTMA.Migrations
             modelBuilder.Entity("ProjectTeamTMA.Model.BookRoom", b =>
                 {
                     b.Property<int>("bookRoomId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("RoomsroomId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UsersuserId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("createdTime")
                         .HasColumnType("datetime");
@@ -61,13 +57,13 @@ namespace ProjectTeamTMA.Migrations
                     b.HasKey("bookRoomId")
                         .HasName("PK_BookRooms");
 
-                    b.HasIndex("RoomsroomId");
 
-                    b.HasIndex("UsersuserId");
+
+                    b.HasIndex("personBookingId");
 
                     b.HasIndex("roomId");
 
-                    b.ToTable("BookRooms");
+                    b.ToTable("BookRoom");
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Building", b =>
@@ -90,7 +86,7 @@ namespace ProjectTeamTMA.Migrations
                     b.HasKey("Id")
                         .HasName("PK_Buildings");
 
-                    b.ToTable("Buildings");
+                    b.ToTable("Building");
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Floor", b =>
@@ -99,9 +95,6 @@ namespace ProjectTeamTMA.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("BuildingsId")
-                        .HasColumnType("int");
 
                     b.Property<int>("buildingId")
                         .HasColumnType("int");
@@ -119,11 +112,10 @@ namespace ProjectTeamTMA.Migrations
                     b.HasKey("floorId")
                         .HasName("PK_Floors");
 
-                    b.HasIndex("BuildingsId");
 
                     b.HasIndex("buildingId");
 
-                    b.ToTable("Floors");
+                    b.ToTable("Floor");
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Role", b =>
@@ -146,12 +138,13 @@ namespace ProjectTeamTMA.Migrations
                     b.HasKey("roleID")
                         .HasName("PK_IdRole");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Room", b =>
                 {
                     b.Property<int>("roomId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
@@ -183,7 +176,7 @@ namespace ProjectTeamTMA.Migrations
 
                     b.HasIndex("floorId");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Room");
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.User", b =>
@@ -193,8 +186,6 @@ namespace ProjectTeamTMA.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("RolesroleID")
-                        .HasColumnType("int");
 
                     b.Property<string>("address")
                         .IsRequired()
@@ -228,28 +219,21 @@ namespace ProjectTeamTMA.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.HasKey("userId")
-                        .HasName("PK_Customers");
+                        .HasName("PK_Users");
 
-                    b.HasIndex("RolesroleID");
+
 
                     b.HasIndex("roleId");
 
-                    b.ToTable("Customers");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.BookRoom", b =>
                 {
-                    b.HasOne("ProjectTeamTMA.Model.Room", "Rooms")
-                        .WithMany("BookRooms")
-                        .HasForeignKey("RoomsroomId");
-
-                    b.HasOne("ProjectTeamTMA.Model.User", "Users")
-                        .WithMany("BookRooms")
-                        .HasForeignKey("UsersuserId");
 
                     b.HasOne("ProjectTeamTMA.Model.User", null)
                         .WithMany()
-                        .HasForeignKey("bookRoomId")
+                        .HasForeignKey("personBookingId")
                         .HasConstraintName("FK_BookRooms_Users")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -268,9 +252,6 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Floor", b =>
                 {
-                    b.HasOne("ProjectTeamTMA.Model.Building", "Buildings")
-                        .WithMany("Floors")
-                        .HasForeignKey("BuildingsId");
 
                     b.HasOne("ProjectTeamTMA.Model.Building", null)
                         .WithMany()
@@ -284,15 +265,11 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Room", b =>
                 {
-                    b.HasOne("ProjectTeamTMA.Model.Floor", "Floors")
-                        .WithMany("Rooms")
-                        .HasForeignKey("floorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+
 
                     b.HasOne("ProjectTeamTMA.Model.Floor", null)
                         .WithMany()
-                        .HasForeignKey("roomId")
+                        .HasForeignKey("floorId")
                         .HasConstraintName("FK_Rooms_Roles")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -302,9 +279,7 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.User", b =>
                 {
-                    b.HasOne("ProjectTeamTMA.Model.Role", "Roles")
-                        .WithMany("Users")
-                        .HasForeignKey("RolesroleID");
+
 
                     b.HasOne("ProjectTeamTMA.Model.Role", null)
                         .WithMany()

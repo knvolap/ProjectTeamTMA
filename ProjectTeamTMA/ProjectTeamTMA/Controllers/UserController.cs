@@ -66,6 +66,7 @@ namespace ProjectTeamTMA.Controllers
             await userRepostitory.AddAsync(user);
             return Ok(user.userId);
         }
+
         [HttpPut]
         public async Task<IActionResult> Update(User user)
         {
