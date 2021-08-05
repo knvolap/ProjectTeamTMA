@@ -10,8 +10,8 @@ using ProjectTeamTMA.DBContexts;
 namespace ProjectTeamTMA.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    [Migration("20210805100444_DBInit1")]
-    partial class DBInit1
+    [Migration("20210805155555_DBInit")]
+    partial class DBInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -204,9 +204,6 @@ namespace ProjectTeamTMA.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("RolesroleID")
-                        .HasColumnType("int");
-
                     b.Property<string>("address")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
@@ -225,7 +222,11 @@ namespace ProjectTeamTMA.Migrations
                     b.Property<int>("phone")
                         .HasColumnType("int");
 
-                    b.Property<int>("roleId")
+                    b.Property<string>("role")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int?>("roleID")
                         .HasColumnType("int");
 
                     b.Property<ulong?>("status")
@@ -241,9 +242,7 @@ namespace ProjectTeamTMA.Migrations
                     b.HasKey("userId")
                         .HasName("PK_Users");
 
-                    b.HasIndex("RolesroleID");
-
-                    b.HasIndex("roleId");
+                    b.HasIndex("roleID");
 
                     b.ToTable("User");
                 });
@@ -311,18 +310,9 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.User", b =>
                 {
-                    b.HasOne("ProjectTeamTMA.Model.Role", "Roles")
-                        .WithMany("Users")
-                        .HasForeignKey("RolesroleID");
-
                     b.HasOne("ProjectTeamTMA.Model.Role", null)
-                        .WithMany()
-                        .HasForeignKey("roleId")
-                        .HasConstraintName("FK_Users_Roles")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Roles");
+                        .WithMany("Users")
+                        .HasForeignKey("roleID");
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Building", b =>

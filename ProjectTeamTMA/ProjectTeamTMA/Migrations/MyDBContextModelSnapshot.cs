@@ -112,7 +112,6 @@ namespace ProjectTeamTMA.Migrations
                     b.HasKey("floorId")
                         .HasName("PK_Floors");
 
-
                     b.HasIndex("buildingId");
 
                     b.ToTable("Floor");
@@ -148,6 +147,8 @@ namespace ProjectTeamTMA.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
+
+
                     b.Property<int>("NumberOfBeds")
                         .HasColumnType("int");
 
@@ -174,6 +175,7 @@ namespace ProjectTeamTMA.Migrations
                     b.HasKey("roomId")
                         .HasName("PK_Customers");
 
+
                     b.HasIndex("floorId");
 
                     b.ToTable("Room");
@@ -185,7 +187,6 @@ namespace ProjectTeamTMA.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
-
 
                     b.Property<string>("address")
                         .IsRequired()
@@ -205,8 +206,9 @@ namespace ProjectTeamTMA.Migrations
                     b.Property<int>("phone")
                         .HasColumnType("int");
 
-                    b.Property<int>("roleId")
-                        .HasColumnType("int");
+                    b.Property<string>("role")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
 
                     b.Property<ulong?>("status")
                         .HasColumnType("bit");
@@ -222,8 +224,6 @@ namespace ProjectTeamTMA.Migrations
                         .HasName("PK_Users");
 
 
-
-                    b.HasIndex("roleId");
 
                     b.ToTable("User");
                 });
@@ -252,7 +252,6 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Floor", b =>
                 {
-
                     b.HasOne("ProjectTeamTMA.Model.Building", null)
                         .WithMany()
                         .HasForeignKey("buildingId")
@@ -277,19 +276,7 @@ namespace ProjectTeamTMA.Migrations
                     b.Navigation("Floors");
                 });
 
-            modelBuilder.Entity("ProjectTeamTMA.Model.User", b =>
-                {
 
-
-                    b.HasOne("ProjectTeamTMA.Model.Role", null)
-                        .WithMany()
-                        .HasForeignKey("roleId")
-                        .HasConstraintName("FK_Users_Roles")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Roles");
-                });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Building", b =>
                 {
@@ -299,11 +286,6 @@ namespace ProjectTeamTMA.Migrations
             modelBuilder.Entity("ProjectTeamTMA.Model.Floor", b =>
                 {
                     b.Navigation("Rooms");
-                });
-
-            modelBuilder.Entity("ProjectTeamTMA.Model.Role", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Room", b =>

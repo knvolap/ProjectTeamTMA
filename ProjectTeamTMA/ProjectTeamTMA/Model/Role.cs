@@ -12,6 +12,6 @@ namespace ProjectTeamTMA.Model
         public DateTime createdTime { get; set; }
         public DateTime? updatedTime { get; set; }
 
-        public List<User> Users { get; set; }
+        //public List<User> Users { get; set; }
     }
 }
