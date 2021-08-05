@@ -12,6 +12,7 @@ namespace ProjectTeamTMA.Repository
     {
         public UserRepostitory(MyDBContext context) : base(context)
         {
+
         }
 
     }

@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTeamTMA.DBContexts;
 using ProjectTeamTMA.Interface;
-using ProjectTeamTMA;
+using ProjectTeamTMA.Model;
+using ProjectTeamTMA.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using ProjectTeamTMA.Repository;
-using ProjectTeamTMA.Model;
 
 namespace ProjectTeamTMA.Controllers
 {
@@ -30,15 +29,6 @@ namespace ProjectTeamTMA.Controllers
             userRepostitory = new UserRepostitory(_context);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> List2()
-        {
-            var user1 = await userRepostitory.ListAsync();
-            IEnumerable<User> user= new List<User>();
-            _mapper.Map(user1, user);
-            return Ok(user);
-        }
-
         [HttpPost]
         [Route("login")]
         public ActionResult Login([FromBody] LoginModels loginModel)
@@ -48,14 +38,41 @@ namespace ProjectTeamTMA.Controllers
             return Ok(authenResponse);
         }
 
+
+        // GET: api/<UserController>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> List2()
+        {
+            var user1 = await userRepostitory.ListAsync();
+            IEnumerable<User> users = new List<User>();
+            _mapper.Map(user1, users);
+            return Ok(users);
+        }
+
+        // GET api/<UserController>/5
+        [HttpGet("{id}")]
+        public string Get(int id)
+        {
+            return "value";
+        }
+
         // POST api/<UserController>
-        //[Authorize(Roles = "Admin")]
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(User user)
         {
             User user1 = new User();
             _mapper.Map(user, user1);
             await userRepostitory.AddAsync(user);
+            return Ok(user.userId);
+        }
+        [HttpPut]
+        public async Task<IActionResult> Update(User user)
+        {
+            User user1 = new User();
+            _mapper.Map(user, user1);
+            await userRepostitory.UpdateAsync(user);
             return Ok(user.userId);
         }
 
@@ -71,5 +88,6 @@ namespace ProjectTeamTMA.Controllers
             await userRepostitory.DeleteAsync(user1);
             return Ok();
         }
+
     }
 }
