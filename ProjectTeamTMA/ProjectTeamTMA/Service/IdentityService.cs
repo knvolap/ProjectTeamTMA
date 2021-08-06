@@ -25,16 +25,16 @@ namespace ProjectTeamTMA.Serivce
 
         public ResponseToken Authentication(LoginModels loginModels)
         {
-            var Customers1 = _context.Customers.Where(a => a.Account == loginModels.username && a.Password == loginModels.password)
-                .FirstOrDefault<Customer>();
-            if (Customers1 != null)
+            var user1 = _context.Users.Where(a => a.userName == loginModels.username && a.passWord == loginModels.password)
+                .FirstOrDefault<User>();
+            if (user1 != null)
             {
                 var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, Customers1.Account),
+                    new Claim(ClaimTypes.Name, user1.userName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
-                authClaims.Add(new Claim(ClaimTypes.Role, Customers1.Role));
+                authClaims.Add(new Claim(ClaimTypes.Role, user1.role));
 
                 var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
                 var token = new JwtSecurityToken(

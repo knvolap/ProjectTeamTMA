@@ -8,11 +8,10 @@ using System.Threading.Tasks;
 
 namespace ProjectTeamTMA.Repository
 {
-    public class CustomerRepostitory:GenericRepository<Customer>
+    public class RoleRepository : GenericRepository<Role>
     {
-        public CustomerRepostitory(MyDBContext context) : base(context)
+        public RoleRepository(MyDBContext context) : base(context)
         {
         }
-
     }
 }
