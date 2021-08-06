@@ -7,11 +7,11 @@ namespace ProjectTeamTMA.Model
 {
     public class Role
     {
-        public int roleID { get; set; }
+        public int Id { get; set; }
         public string roleName { get; set; }
         public DateTime createdTime { get; set; }
         public DateTime? updatedTime { get; set; }
 
-        //public List<User> Users { get; set; }
+        public List<User> Users { get; set; }
     }
 }

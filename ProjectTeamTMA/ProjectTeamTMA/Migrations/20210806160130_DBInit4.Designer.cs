@@ -10,7 +10,7 @@ using ProjectTeamTMA.DBContexts;
 namespace ProjectTeamTMA.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    [Migration("20210806145728_DBInit4")]
+    [Migration("20210806160130_DBInit4")]
     partial class DBInit4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,7 +22,7 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.BookRoom", b =>
                 {
-                    b.Property<int>("bookRoomId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
@@ -31,6 +31,9 @@ namespace ProjectTeamTMA.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<DateTime?>("endDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("endTime")
                         .HasColumnType("datetime");
 
                     b.Property<string>("issue")
@@ -49,13 +52,16 @@ namespace ProjectTeamTMA.Migrations
                     b.Property<DateTime>("startDay")
                         .HasColumnType("datetime");
 
+                    b.Property<DateTime>("startTime")
+                        .HasColumnType("datetime");
+
                     b.Property<ulong?>("status")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("updatedTime")
                         .HasColumnType("datetime");
 
-                    b.HasKey("bookRoomId")
+                    b.HasKey("Id")
                         .HasName("PK_BookRooms");
 
                     b.HasIndex("personBookingId");
@@ -114,7 +120,7 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Floor", b =>
                 {
-                    b.Property<int>("floorId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
@@ -132,7 +138,7 @@ namespace ProjectTeamTMA.Migrations
                     b.Property<DateTime?>("updatedTime")
                         .HasColumnType("datetime");
 
-                    b.HasKey("floorId")
+                    b.HasKey("Id")
                         .HasName("PK_Floors");
 
                     b.HasIndex("buildingId");
@@ -142,7 +148,7 @@ namespace ProjectTeamTMA.Migrations
                     b.HasData(
                         new
                         {
-                            floorId = 1,
+                            Id = 1,
                             buildingId = 1,
                             createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             floorName = "Tầng 1",
@@ -150,7 +156,7 @@ namespace ProjectTeamTMA.Migrations
                         },
                         new
                         {
-                            floorId = 2,
+                            Id = 2,
                             buildingId = 1,
                             createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             floorName = "Tầng 2",
@@ -158,7 +164,7 @@ namespace ProjectTeamTMA.Migrations
                         },
                         new
                         {
-                            floorId = 3,
+                            Id = 3,
                             buildingId = 1,
                             createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             floorName = "Tầng 3",
@@ -166,7 +172,7 @@ namespace ProjectTeamTMA.Migrations
                         },
                         new
                         {
-                            floorId = 4,
+                            Id = 4,
                             buildingId = 2,
                             createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             floorName = "Tầng 1",
@@ -174,7 +180,7 @@ namespace ProjectTeamTMA.Migrations
                         },
                         new
                         {
-                            floorId = 5,
+                            Id = 5,
                             buildingId = 2,
                             createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             floorName = "Tầng 2",
@@ -182,7 +188,7 @@ namespace ProjectTeamTMA.Migrations
                         },
                         new
                         {
-                            floorId = 6,
+                            Id = 6,
                             buildingId = 2,
                             createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             floorName = "Tầng 3",
@@ -192,7 +198,7 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Role", b =>
                 {
-                    b.Property<int>("roleID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
@@ -207,15 +213,31 @@ namespace ProjectTeamTMA.Migrations
                     b.Property<DateTime?>("updatedTime")
                         .HasColumnType("datetime");
 
-                    b.HasKey("roleID")
+                    b.HasKey("Id")
                         .HasName("PK_IdRole");
 
                     b.ToTable("Role");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            roleName = "Admin",
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            roleName = "User",
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Room", b =>
                 {
-                    b.Property<int>("roomId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
@@ -243,7 +265,7 @@ namespace ProjectTeamTMA.Migrations
                     b.Property<DateTime?>("updatedTime")
                         .HasColumnType("datetime");
 
-                    b.HasKey("roomId")
+                    b.HasKey("Id")
                         .HasName("PK_Rooms");
 
                     b.HasIndex("floorId");
@@ -253,7 +275,7 @@ namespace ProjectTeamTMA.Migrations
                     b.HasData(
                         new
                         {
-                            roomId = 1,
+                            Id = 1,
                             NumberOfBeds = 2,
                             area = "40m2",
                             createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -264,7 +286,7 @@ namespace ProjectTeamTMA.Migrations
                         },
                         new
                         {
-                            roomId = 2,
+                            Id = 2,
                             NumberOfBeds = 2,
                             area = "40m2",
                             createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -275,7 +297,7 @@ namespace ProjectTeamTMA.Migrations
                         },
                         new
                         {
-                            roomId = 3,
+                            Id = 3,
                             NumberOfBeds = 2,
                             area = "40m2",
                             createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -286,7 +308,7 @@ namespace ProjectTeamTMA.Migrations
                         },
                         new
                         {
-                            roomId = 4,
+                            Id = 4,
                             NumberOfBeds = 2,
                             area = "40m2",
                             createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -299,7 +321,7 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.User", b =>
                 {
-                    b.Property<int>("userId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
@@ -322,9 +344,8 @@ namespace ProjectTeamTMA.Migrations
                     b.Property<int>("phone")
                         .HasColumnType("int");
 
-                    b.Property<string>("role")
-                        .IsRequired()
-                        .HasColumnType("varchar(100)");
+                    b.Property<int>("roleId")
+                        .HasColumnType("int");
 
                     b.Property<ulong?>("status")
                         .HasColumnType("bit");
@@ -336,47 +357,49 @@ namespace ProjectTeamTMA.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(100)");
 
-                    b.HasKey("userId")
+                    b.HasKey("Id")
                         .HasName("PK_Users");
+
+                    b.HasIndex("roleId");
 
                     b.ToTable("User");
 
                     b.HasData(
                         new
                         {
-                            userId = 1,
+                            Id = 1,
                             address = "Bình Định",
                             createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             name = "Võ Lập",
                             passWord = "123123",
                             phone = 37516333,
-                            role = "Admin",
+                            roleId = 1,
                             status = 1ul,
                             updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             userName = "knvolap"
                         },
                         new
                         {
-                            userId = 2,
+                            Id = 2,
                             address = "Bình Định",
                             createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             name = "Văn Tính",
                             passWord = "123123",
                             phone = 37516444,
-                            role = "User",
+                            roleId = 2,
                             status = 1ul,
                             updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             userName = "vantinh"
                         },
                         new
                         {
-                            userId = 3,
+                            Id = 3,
                             address = "Đà Nẵng",
                             createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             name = "Thanh Thảo",
                             passWord = "123123",
                             phone = 37516555,
-                            role = "User",
+                            roleId = 2,
                             status = 1ul,
                             updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             userName = "thanhthao"
@@ -424,6 +447,17 @@ namespace ProjectTeamTMA.Migrations
                     b.Navigation("Floors");
                 });
 
+            modelBuilder.Entity("ProjectTeamTMA.Model.User", b =>
+                {
+                    b.HasOne("ProjectTeamTMA.Model.Role", "Roles")
+                        .WithMany("Users")
+                        .HasForeignKey("roleId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Roles");
+                });
+
             modelBuilder.Entity("ProjectTeamTMA.Model.Building", b =>
                 {
                     b.Navigation("Floors");
@@ -432,6 +466,11 @@ namespace ProjectTeamTMA.Migrations
             modelBuilder.Entity("ProjectTeamTMA.Model.Floor", b =>
                 {
                     b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("ProjectTeamTMA.Model.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Room", b =>

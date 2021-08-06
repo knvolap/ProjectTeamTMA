@@ -7,8 +7,8 @@ namespace ProjectTeamTMA.Model
 {
     public class User
     {
-            public int userId { get; set; }
-            public string role { get; set; }
+            public int Id { get; set; }
+            public int roleId { get; set; }
             public string name { get; set; }
             public int phone { get; set; }    
             public string address { get; set; }
@@ -18,8 +18,8 @@ namespace ProjectTeamTMA.Model
             public DateTime createdTime { get; set; }
             public DateTime? updatedTime { get; set; }
 
-            //public Role Roles { get; set; }
-            public List<BookRoom> BookRooms { get; set; }
+        public Role Roles { get; set; }
+        public List<BookRoom> BookRooms { get; set; }
     }
 }
 

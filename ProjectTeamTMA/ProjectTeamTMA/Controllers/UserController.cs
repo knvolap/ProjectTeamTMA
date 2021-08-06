@@ -64,7 +64,7 @@ namespace ProjectTeamTMA.Controllers
             User user1 = new User();
             _mapper.Map(user, user1);
             await userRepostitory.AddAsync(user);
-            return Ok(user.userId);
+            return Ok(user.Id);
         }
 
         [HttpPut]
@@ -73,7 +73,7 @@ namespace ProjectTeamTMA.Controllers
             User user1 = new User();
             _mapper.Map(user, user1);
             await userRepostitory.UpdateAsync(user);
-            return Ok(user.userId);
+            return Ok(user.Id);
         }
 
         [Authorize(Roles = "Admin")]

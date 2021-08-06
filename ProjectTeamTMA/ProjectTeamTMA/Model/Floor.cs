@@ -7,7 +7,7 @@ namespace ProjectTeamTMA.Model
 {
     public class Floor
     {
-        public int floorId { get; set; }
+        public int Id { get; set; }
         public int buildingId { get; set; }
         public string floorName { get; set; }
         public DateTime createdTime { get; set; }

@@ -44,7 +44,7 @@ namespace ProjectTeamTMA.Data
             modelBuilder.Entity<Floor>().HasData(
                new Floor()
                {
-                   floorId = 1,
+                   Id = 1,
                    buildingId = 1,
                    floorName = "Tầng 1",
                    createdTime = DateTime.Parse("2021 - 07 - 05 00:00:00"),
@@ -52,7 +52,7 @@ namespace ProjectTeamTMA.Data
                },
                new Floor()
                {
-                   floorId = 2,
+                   Id = 2,
                    buildingId = 1,
                    floorName = "Tầng 2",
                    createdTime = DateTime.Parse("2021 - 07 - 05 00:00:00"),
@@ -60,7 +60,7 @@ namespace ProjectTeamTMA.Data
                },
                new Floor()
                {
-                   floorId = 3,
+                   Id = 3,
                    buildingId = 1,
                    floorName = "Tầng 3",
                    createdTime = DateTime.Parse("2021 - 07 - 05 00:00:00"),
@@ -68,7 +68,7 @@ namespace ProjectTeamTMA.Data
                },
                new Floor()
                {
-                   floorId = 4,
+                   Id = 4,
                    buildingId = 2,
                    floorName = "Tầng 1",
                    createdTime = DateTime.Parse("2021 - 07 - 05 00:00:00"),
@@ -76,7 +76,7 @@ namespace ProjectTeamTMA.Data
                },
                new Floor()
                {
-                   floorId = 5,
+                   Id = 5,
                    buildingId = 2,
                    floorName = "Tầng 2",
                    createdTime = DateTime.Parse("2021 - 07 - 05 00:00:00"),
@@ -84,7 +84,7 @@ namespace ProjectTeamTMA.Data
                },
                new Floor()
                {
-                   floorId = 6,
+                   Id = 6,
                    buildingId = 2,
                    floorName = "Tầng 3",
                    createdTime = DateTime.Parse("2021 - 07 - 05 00:00:00"),
@@ -94,7 +94,7 @@ namespace ProjectTeamTMA.Data
             modelBuilder.Entity<Room>().HasData(
               new Room()
               {
-                  roomId = 1,
+                  Id = 1,
                   floorId = 1,
                   roomName = "A111",
                   area = "40m2",
@@ -105,7 +105,7 @@ namespace ProjectTeamTMA.Data
               },
               new Room()
               {
-                  roomId = 2,
+                  Id = 2,
                   floorId = 1,
                   roomName = "A112",
                   area = "40m2",
@@ -116,7 +116,7 @@ namespace ProjectTeamTMA.Data
               },
               new Room()
               {
-                  roomId = 3,
+                  Id = 3,
                   floorId = 1,
                   roomName = "A212",
                   area = "40m2",
@@ -127,7 +127,7 @@ namespace ProjectTeamTMA.Data
               },
               new Room()
               {
-                  roomId = 4,
+                  Id = 4,
                   floorId = 1,
                   roomName = "A212",
                   area = "40m2",
@@ -137,11 +137,28 @@ namespace ProjectTeamTMA.Data
                   updatedTime = DateTime.Parse("2021 - 07 - 05 00:00:00")
               });
 
+            modelBuilder.Entity<Role>().HasData(
+            new Role()
+            {
+                Id = 1,
+                roleName = "Admin",
+                createdTime = DateTime.Parse("2021 - 07 - 05 00:00:00"),
+                updatedTime = DateTime.Parse("2021 - 07 - 05 00:00:00")
+            },
+             new Role()
+             {
+                 Id = 2,
+                 roleName = "User",
+                 createdTime = DateTime.Parse("2021 - 07 - 05 00:00:00"),
+                 updatedTime = DateTime.Parse("2021 - 07 - 05 00:00:00")
+             });
+
+
             modelBuilder.Entity<User>().HasData(
              new User()
              {
-                 userId = 1,
-                 role = "Admin",
+                 Id = 1,
+                 roleId = 1,
                  name = "Võ Lập",
                  phone = 037516333,
                  address = "Bình Định",
@@ -153,8 +170,8 @@ namespace ProjectTeamTMA.Data
              },
              new User()
              {
-                 userId = 2,
-                 role = "User",
+                 Id = 2,
+                 roleId = 2,
                  name = "Văn Tính",
                  phone = 037516444,
                  address = "Bình Định",
@@ -166,8 +183,8 @@ namespace ProjectTeamTMA.Data
              },
              new User()
              {
-                 userId = 3,
-                 role = "User",
+                 Id = 3,
+                 roleId = 2,
                  name = "Thanh Thảo",
                  phone = 037516555,
                  address = "Đà Nẵng",

@@ -38,7 +38,7 @@ namespace ProjectTeamTMA.Controllers
             Role role1 = new Role();
             _mapper.Map(role, role1);
             await roleRepository.AddAsync(role);
-            return Ok(role.roleID);
+            return Ok(role.Id);
         }
         [HttpPut]
         public async Task<IActionResult> Update(Role role)
@@ -46,7 +46,7 @@ namespace ProjectTeamTMA.Controllers
             Role role1 = new Role();
             _mapper.Map(role, role1);
             await roleRepository.UpdateAsync(role);
-            return Ok(role.roleID);
+            return Ok(role.Id);
         }
 
         [HttpDelete("{id}")] //xóa đúng

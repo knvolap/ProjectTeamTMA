@@ -34,7 +34,7 @@ namespace ProjectTeamTMA.Serivce
                     new Claim(ClaimTypes.Name, user1.userName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
-                authClaims.Add(new Claim(ClaimTypes.Role, user1.role));
+                authClaims.Add(new Claim(ClaimTypes.Role, user1.name));
 
                 var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
                 var token = new JwtSecurityToken(

@@ -39,7 +39,7 @@ namespace ProjectTeamTMA.Controllers
             Floor floor1 = new Floor();
             _mapper.Map(floor, floor1);
             await floorRepository.AddAsync(floor);
-            return Ok(floor.floorId);
+            return Ok(floor.Id);
         }
 
         [HttpPut]
@@ -48,7 +48,7 @@ namespace ProjectTeamTMA.Controllers
             Floor floor1 = new Floor();
             _mapper.Map(floor, floor1);
             await floorRepository.UpdateAsync(floor);
-            return Ok(floor.floorId);
+            return Ok(floor.Id);
         }
 
         [HttpDelete("{id}")] //xóa đúng

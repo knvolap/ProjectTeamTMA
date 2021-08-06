@@ -39,7 +39,7 @@ namespace ProjectTeamTMA.Controllers
             Room room1 = new Room();
             _mapper.Map(room, room1);
             await roomRepository.AddAsync(room);
-            return Ok(room.roomId);
+            return Ok(room.Id);
         }
 
         [HttpPut]
@@ -48,7 +48,7 @@ namespace ProjectTeamTMA.Controllers
             Room room1 = new Room();
             _mapper.Map(room, room1);
             await roomRepository.UpdateAsync(room);
-            return Ok(room.roomId);
+            return Ok(room.Id);
         }
 
         [HttpDelete("{id}")] //xóa đúng
