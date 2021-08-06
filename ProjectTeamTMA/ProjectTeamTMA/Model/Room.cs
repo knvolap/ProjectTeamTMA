@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProjectTeamTMA.Model
 {
@@ -17,7 +15,7 @@ namespace ProjectTeamTMA.Model
        public DateTime? updatedTime { get; set; }
 
        public Floor Floors { get; set; }
-       public List<BookRoom> BookRooms { get; set; }
+       public BookRoom BookRooms { get; set; }
         
     }
 }

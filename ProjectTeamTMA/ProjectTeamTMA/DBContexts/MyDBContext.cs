@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProjectTeamTMA.Data;
 using ProjectTeamTMA.Model;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace ProjectTeamTMA.DBContexts
             modelBuilder.Entity<User>().HasKey(u => u.userId).HasName("PK_Users");
             modelBuilder.Entity<Building>().HasKey(b => b.Id).HasName("PK_Buildings");
             modelBuilder.Entity<Floor>().HasKey(f => f.floorId).HasName("PK_Floors");       
-            modelBuilder.Entity<Room>().HasKey(ro => ro.roomId).HasName("PK_Customers");
+            modelBuilder.Entity<Room>().HasKey(ro => ro.roomId).HasName("PK_Rooms");
             modelBuilder.Entity<BookRoom>().HasKey(bk => bk.bookRoomId).HasName("PK_BookRooms");
            
             // Configure columns  
@@ -86,14 +87,26 @@ namespace ProjectTeamTMA.DBContexts
             modelBuilder.Entity<BookRoom>().Property(BR => BR.createdTime).HasColumnType("datetime").IsRequired();
             modelBuilder.Entity<BookRoom>().Property(BR => BR.updatedTime).HasColumnType("datetime").IsRequired(false);
 
-        // Configure relationships  
-            modelBuilder.Entity<Floor>().HasOne<Building>().WithMany().HasPrincipalKey(b => b.Id).HasForeignKey(f => f.buildingId).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Buildings_Floors");
-            modelBuilder.Entity<Room>().HasOne<Floor>().WithMany().HasPrincipalKey(f => f.floorId).HasForeignKey(r =>r.floorId).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Rooms_Roles");        
-            modelBuilder.Entity<BookRoom>().HasOne<User>().WithMany().HasPrincipalKey(u => u.userId).HasForeignKey(b => b.personBookingId).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_BookRooms_Users");
-            modelBuilder.Entity<BookRoom>().HasOne<Room>().WithMany().HasPrincipalKey(br => br.roomId).HasForeignKey(r => r.roomId).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_BookRooms_Rooms");
-            
-            //modelBuilder.Entity<User>().HasOne<Role>().WithMany().HasPrincipalKey(rl => rl.roleID).HasForeignKey(u => u.roleId).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Users_Roles");
+            //Data seeding -- nhập dữ liệu có sẵn ở file "ModelBuilderExtensions"
+            modelBuilder.Seed();
 
+            // Configure relationships  
+            //liên kết 1 vs N
+            modelBuilder.Entity<Floor>().HasOne(b => b.Buildings).WithMany(b => b.Floors).HasForeignKey(p => p.buildingId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Room>().HasOne(b => b.Floors).WithMany(b => b.Rooms).HasForeignKey(p => p.floorId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<BookRoom>().HasOne(b => b.Users).WithMany(b => b.BookRooms).HasForeignKey(p => p.personBookingId).OnDelete(DeleteBehavior.NoAction);
+
+            // liên kết 1-1
+            modelBuilder.Entity<Room>().HasOne<BookRoom>(s => s.BookRooms)
+                .WithOne(ad => ad.Rooms).HasForeignKey<BookRoom>(ad => ad.roomId);
+
+
+            //modelBuilder.Entity<Floor>().HasOne<Building>().WithMany().HasPrincipalKey(b => b.Id).HasForeignKey(f => f.buildingId)
+            //                                                                                   .OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder.Entity<Room>().HasOne<Floor>().WithMany().HasPrincipalKey(f => f.floorId).HasForeignKey(r =>r.floorId).OnDelete(DeleteBehavior.NoAction);        
+            //modelBuilder.Entity<BookRoom>().HasOne<User>().WithMany().HasPrincipalKey(u => u.userId).HasForeignKey(b => b.personBookingId).OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder.Entity<BookRoom>().HasOne<Room>().WithMany().HasPrincipalKey(br => br.roomId).HasForeignKey(r => r.roomId).OnDelete(DeleteBehavior.NoAction);           
+            //modelBuilder.Entity<User>().HasOne<Role>().WithMany().HasPrincipalKey(rl => rl.roleID).HasForeignKey(u => u.roleId).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Users_Roles");
             //modelBuilder.Entity<BookRoom>().HasOne<Room>().WithOne().HasPrincipalKey(br => br.IdRoom).HasForeignKey(r => r.IdRoom).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_BookRooms_Rooms");
 
 

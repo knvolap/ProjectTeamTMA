@@ -25,7 +25,6 @@ namespace ProjectTeamTMA.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
-
                     b.Property<DateTime>("createdTime")
                         .HasColumnType("datetime");
 
@@ -57,11 +56,10 @@ namespace ProjectTeamTMA.Migrations
                     b.HasKey("bookRoomId")
                         .HasName("PK_BookRooms");
 
-
-
                     b.HasIndex("personBookingId");
 
-                    b.HasIndex("roomId");
+                    b.HasIndex("roomId")
+                        .IsUnique();
 
                     b.ToTable("BookRoom");
                 });
@@ -87,6 +85,29 @@ namespace ProjectTeamTMA.Migrations
                         .HasName("PK_Buildings");
 
                     b.ToTable("Building");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            buildingName = "Toàn nhà 1",
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            buildingName = "Toàn nhà 2",
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            buildingName = "Toàn nhà 3",
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Floor", b =>
@@ -115,6 +136,56 @@ namespace ProjectTeamTMA.Migrations
                     b.HasIndex("buildingId");
 
                     b.ToTable("Floor");
+
+                    b.HasData(
+                        new
+                        {
+                            floorId = 1,
+                            buildingId = 1,
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            floorName = "Tầng 1",
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            floorId = 2,
+                            buildingId = 1,
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            floorName = "Tầng 2",
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            floorId = 3,
+                            buildingId = 1,
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            floorName = "Tầng 3",
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            floorId = 4,
+                            buildingId = 2,
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            floorName = "Tầng 1",
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            floorId = 5,
+                            buildingId = 2,
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            floorName = "Tầng 2",
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            floorId = 6,
+                            buildingId = 2,
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            floorName = "Tầng 3",
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Role", b =>
@@ -147,8 +218,6 @@ namespace ProjectTeamTMA.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
-
-
                     b.Property<int>("NumberOfBeds")
                         .HasColumnType("int");
 
@@ -173,12 +242,57 @@ namespace ProjectTeamTMA.Migrations
                         .HasColumnType("datetime");
 
                     b.HasKey("roomId")
-                        .HasName("PK_Customers");
-
+                        .HasName("PK_Rooms");
 
                     b.HasIndex("floorId");
 
                     b.ToTable("Room");
+
+                    b.HasData(
+                        new
+                        {
+                            roomId = 1,
+                            NumberOfBeds = 2,
+                            area = "40m2",
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            floorId = 1,
+                            roomName = "A111",
+                            status = 1ul,
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            roomId = 2,
+                            NumberOfBeds = 2,
+                            area = "40m2",
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            floorId = 1,
+                            roomName = "A112",
+                            status = 1ul,
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            roomId = 3,
+                            NumberOfBeds = 2,
+                            area = "40m2",
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            floorId = 1,
+                            roomName = "A212",
+                            status = 1ul,
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            roomId = 4,
+                            NumberOfBeds = 2,
+                            area = "40m2",
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            floorId = 1,
+                            roomName = "A212",
+                            status = 1ul,
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.User", b =>
@@ -223,26 +337,62 @@ namespace ProjectTeamTMA.Migrations
                     b.HasKey("userId")
                         .HasName("PK_Users");
 
-
-
                     b.ToTable("User");
+
+                    b.HasData(
+                        new
+                        {
+                            userId = 1,
+                            address = "Bình Định",
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            name = "Võ Lập",
+                            passWord = "123123",
+                            phone = 37516333,
+                            role = "Admin",
+                            status = 1ul,
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            userName = "knvolap"
+                        },
+                        new
+                        {
+                            userId = 2,
+                            address = "Bình Định",
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            name = "Văn Tính",
+                            passWord = "123123",
+                            phone = 37516444,
+                            role = "User",
+                            status = 1ul,
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            userName = "vantinh"
+                        },
+                        new
+                        {
+                            userId = 3,
+                            address = "Đà Nẵng",
+                            createdTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            name = "Thanh Thảo",
+                            passWord = "123123",
+                            phone = 37516555,
+                            role = "User",
+                            status = 1ul,
+                            updatedTime = new DateTime(2021, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            userName = "thanhthao"
+                        });
                 });
 
             modelBuilder.Entity("ProjectTeamTMA.Model.BookRoom", b =>
                 {
-
-                    b.HasOne("ProjectTeamTMA.Model.User", null)
-                        .WithMany()
+                    b.HasOne("ProjectTeamTMA.Model.User", "Users")
+                        .WithMany("BookRooms")
                         .HasForeignKey("personBookingId")
-                        .HasConstraintName("FK_BookRooms_Users")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("ProjectTeamTMA.Model.Room", null)
-                        .WithMany()
-                        .HasForeignKey("roomId")
-                        .HasConstraintName("FK_BookRooms_Rooms")
-                        .OnDelete(DeleteBehavior.NoAction)
+                    b.HasOne("ProjectTeamTMA.Model.Room", "Rooms")
+                        .WithOne("BookRooms")
+                        .HasForeignKey("ProjectTeamTMA.Model.BookRoom", "roomId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Rooms");
@@ -252,10 +402,9 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Floor", b =>
                 {
-                    b.HasOne("ProjectTeamTMA.Model.Building", null)
-                        .WithMany()
+                    b.HasOne("ProjectTeamTMA.Model.Building", "Buildings")
+                        .WithMany("Floors")
                         .HasForeignKey("buildingId")
-                        .HasConstraintName("FK_Buildings_Floors")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -264,19 +413,14 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Room", b =>
                 {
-
-
-                    b.HasOne("ProjectTeamTMA.Model.Floor", null)
-                        .WithMany()
+                    b.HasOne("ProjectTeamTMA.Model.Floor", "Floors")
+                        .WithMany("Rooms")
                         .HasForeignKey("floorId")
-                        .HasConstraintName("FK_Rooms_Roles")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Floors");
                 });
-
-
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Building", b =>
                 {
