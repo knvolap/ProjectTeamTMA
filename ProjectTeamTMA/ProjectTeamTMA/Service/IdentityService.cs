@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using ProjectTeamTMA.DBContexts;
 using ProjectTeamTMA.Interface;
 using ProjectTeamTMA.Model;
+using ProjectTeamTMA.Repository;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,26 +17,32 @@ namespace ProjectTeamTMA.Serivce
     public class IdentityService : IIdentityService
     {
         private readonly MyDBContext _context;
+        private readonly RoleRepository roleRepository;
+        private readonly UserRepository userRepository;
         private readonly IConfiguration _configuration;
-        public IdentityService(MyDBContext context, IConfiguration configuration)
+        public IdentityService(MyDBContext context, UserRepository userRepository, RoleRepository roleRepository, IConfiguration configuration)
         {
             this._context = context;
+            this.roleRepository = roleRepository;
+            this.userRepository = userRepository;
             _configuration = configuration;
         }
 
         public ResponseToken Authentication(LoginModels loginModels)
         {
-            var user1 = _context.Users.Where(a => a.userName == loginModels.username && a.passWord == loginModels.password)
+            User user1 = _context.Users.Where(a => a.userName == loginModels.username && a.passWord == loginModels.password)
                 .FirstOrDefault<User>();
             if (user1 != null)
             {
+                Role role = _context.Roles.Where(a => a.Id == user1.roleId).FirstOrDefault<Role>();
                 var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user1.userName),
+                    new Claim(ClaimTypes.Role, role.roleName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
-                authClaims.Add(new Claim(ClaimTypes.Role, user1.name));
-
+                //authClaims.Add(new Claim(ClaimTypes.Role, user1.name));
+                //IEnumerable<Role> roles = await roleRepository.GetDetailAsync(user1.roleId).ConfigureAwait(false);
                 var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
                 var token = new JwtSecurityToken(
                     issuer: _configuration["JWT:ValidIssuer"],
