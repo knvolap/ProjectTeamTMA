@@ -5,8 +5,8 @@ namespace ProjectTeamTMA.Model
 {
     public class Room
     {
-       public int Id { get; set; }
-       public int floorId { get; set; }
+       public Guid Id { get; set; }
+       public Guid floorId { get; set; }
        public string roomName { get; set; }
        public string area { get; set; }
        public int NumberOfBeds { get; set; }

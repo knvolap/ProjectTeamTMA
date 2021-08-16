@@ -17,14 +17,10 @@ namespace ProjectTeamTMA.Serivce
     public class IdentityService : IIdentityService
     {
         private readonly MyDBContext _context;
-        private readonly RoleRepository roleRepository;
-        private readonly UserRepository userRepository;
         private readonly IConfiguration _configuration;
-        public IdentityService(MyDBContext context, UserRepository userRepository, RoleRepository roleRepository, IConfiguration configuration)
+        public IdentityService(MyDBContext context, IConfiguration configuration)
         {
-            this._context = context;
-            this.roleRepository = roleRepository;
-            this.userRepository = userRepository;
+            this._context = context;         
             _configuration = configuration;
         }
 

@@ -7,8 +7,8 @@ namespace ProjectTeamTMA.Model
 {
     public class User
     {
-            public int Id { get; set; }
-            public int roleId { get; set; }
+            public Guid Id { get; set; }
+            public Guid roleId { get; set; }
             public string name { get; set; }
             public int phone { get; set; }    
             public string address { get; set; }

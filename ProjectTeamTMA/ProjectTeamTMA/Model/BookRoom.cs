@@ -7,10 +7,10 @@ namespace ProjectTeamTMA.Model
 {
     public class BookRoom
     {
-        public int Id { get; set; }
-        public int personBookingId { get; set; }
-        public int personalApprovedId { get; set; }
-        public int roomId { get; set; }
+        public Guid Id { get; set; }
+        public Guid personBookingId { get; set; }
+        public Guid personalApprovedId { get; set; }
+        public Guid roomId { get; set; }
         public string issue { get; set; }
         public DateTime startDay { get; set; }
         public DateTime? endDate { get; set; }

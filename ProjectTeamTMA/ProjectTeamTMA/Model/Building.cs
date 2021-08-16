@@ -8,7 +8,7 @@ namespace ProjectTeamTMA.Model
 {
     public class Building
     {        
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string buildingName { get; set; }
         public DateTime createdTime { get; set; }
         public DateTime? updatedTime { get; set; }

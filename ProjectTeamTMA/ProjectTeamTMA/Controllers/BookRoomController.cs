@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTeamTMA.DBContexts;
@@ -33,6 +34,7 @@ namespace ProjectTeamTMA.Controllers
             return Ok(bookRoom);
         }
 
+        [Authorize(Roles = "User")]
         [HttpPost]
         public async Task<IActionResult> Create(BookRoom bookRoom)
         {
@@ -41,5 +43,15 @@ namespace ProjectTeamTMA.Controllers
             await bookRoomRepository.AddAsync(bookRoom);
             return Ok(bookRoom.Id);
         }
+
+        //[Authorize(Roles = "Admin")]
+        //[HttpPut]
+        //public async Task<IActionResult> Create(BookRoom bookRoom)
+        //{
+        //    BookRoom bookRoom1 = new BookRoom();
+        //    _mapper.Map(bookRoom, bookRoom1);
+        //    await bookRoomRepository.AddAsync(bookRoom);
+        //    return Ok(bookRoom.Id);
+        
     }
 }
