@@ -57,7 +57,7 @@ namespace ProjectTeamTMA.Controllers
 
         // POST api/<UserController>
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(User user)
         {

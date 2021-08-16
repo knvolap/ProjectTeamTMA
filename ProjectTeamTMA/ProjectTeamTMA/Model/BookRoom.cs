@@ -12,6 +12,8 @@ namespace ProjectTeamTMA.Model
         public Guid personalApprovedId { get; set; }
         public Guid roomId { get; set; }
         public string issue { get; set; }
+
+        
         public DateTime startDay { get; set; }
         public DateTime? endDate { get; set; }
         public DateTime startTime { get; set; }

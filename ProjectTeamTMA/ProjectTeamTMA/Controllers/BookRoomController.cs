@@ -38,20 +38,35 @@ namespace ProjectTeamTMA.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(BookRoom bookRoom)
         {
-            BookRoom bookRoom1 = new BookRoom();
-            _mapper.Map(bookRoom, bookRoom1);
-            await bookRoomRepository.AddAsync(bookRoom);
+
+            BookRoom book = new BookRoom()
+            {
+                personBookingId = bookRoom.personBookingId,
+                roomId = bookRoom.roomId,
+                issue = bookRoom.issue,
+                startDay = DateTime.Now.Date,
+                endDate = DateTime.Now.Date,
+                startTime = DateTime.Parse(DateTime.Now.TimeOfDay.ToString()),
+                endTime = DateTime.Parse(DateTime.Now.TimeOfDay.ToString()),
+                createdTime = DateTime.Now.Date,
+            };
+            await bookRoomRepository.AddAsync(book);
             return Ok(bookRoom.Id);
         }
 
-        //[Authorize(Roles = "Admin")]
-        //[HttpPut]
-        //public async Task<IActionResult> Create(BookRoom bookRoom)
-        //{
-        //    BookRoom bookRoom1 = new BookRoom();
-        //    _mapper.Map(bookRoom, bookRoom1);
-        //    await bookRoomRepository.AddAsync(bookRoom);
-        //    return Ok(bookRoom.Id);
-        
+        [Authorize(Roles = "Admin")]
+        [HttpPut]
+        public async Task<IActionResult> BookRoomApproved(BookRoom bookRoom)
+        {
+            BookRoom bookRoom1 = await bookRoomRepository.GetDetailAsync(bookRoom.Id);
+            bookRoom1.Id = bookRoom.Id;
+            bookRoom1.personalApprovedId = bookRoom.personalApprovedId;
+            bookRoom1.issue = bookRoom.issue;
+            bookRoom1.updatedTime = DateTime.Now.Date;
+            bookRoom1.status = bookRoom.status;
+            await bookRoomRepository.AddAsync(bookRoom1);
+            return Ok();
+        }
+        // status = accept and reject
     }
 }
