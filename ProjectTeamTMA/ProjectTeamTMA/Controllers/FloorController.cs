@@ -52,7 +52,7 @@ namespace ProjectTeamTMA.Controllers
         }
 
         [HttpDelete("{id}")] //xóa đúng
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             Floor floor1 = await floorRepository.GetDetailAsync(id);
             if (floor1 == null)

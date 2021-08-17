@@ -35,32 +35,23 @@ namespace ProjectTeamTMA.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Create(Room room)
-        {
-            Room room1 = new Room();
-            _mapper.Map(room, room1);
+        {         
             await roomRepository.AddAsync(room);
             return Ok(room.Id);
         }
 
         [HttpPut]
         public async Task<IActionResult> Update(Room room)
-        {
-            Room room1 = new Room();
-            _mapper.Map(room, room1);
+        {        
             await roomRepository.UpdateAsync(room);
             return Ok(room.Id);
         }
 
-        [HttpDelete("{id}")] //xóa đúng
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}")] 
+        public async Task<IActionResult> Delete(Room room)
         {
-            Room room1 = await roomRepository.GetDetailAsync(id);
-            if (room1 == null)
-            {
-                return NotFound();
-            }
-            await roomRepository.DeleteAsync(room1);
-            return Ok();
+            await roomRepository.DeleteAsync(room);
+            return Ok(room.Id);
         }
     }
 }

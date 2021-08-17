@@ -57,38 +57,27 @@ namespace ProjectTeamTMA.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut]
-        public async Task<IActionResult> BookRoomApproved(BookRoomViewModel model,int id)
+        public async Task<IActionResult> BookRoomApproved(BookRoomViewModel model)
         {
-            BookRoom bookRoom = await bookRoomRepository.GetDetailAsync(id);         
-            if (bookRoom == null)
+            BookRoom bookRoom = new BookRoom()
             {
-                return NotFound();
-            }
-            else
-            {
-                bookRoom.personalApprovedId = model.personalApprovedId;             
-                bookRoom.issue = model.issue;            
-                bookRoom.updatedTime = DateTime.Parse(model.updatedTime);
-                bookRoom.status = model.status;
-            }    
-            await bookRoomRepository.AddAsync(bookRoom);
-            return Ok();
+                personalApprovedId = model.personalApprovedId,
+                issue = model.issue,                    
+                updatedTime = DateTime.Parse(model.updatedTime),
+                status = model.status
+            };
+            await bookRoomRepository.UpdateAsync(bookRoom);
+            return Ok(bookRoom.Id);
         }
         // status = accept and reject
 
       
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            BookRoom bookRoom = await bookRoomRepository.GetDetailAsync(id);
-            if (bookRoom == null)
-            {
-                return NotFound();
-            }
-         
+        public async Task<IActionResult> Delete(BookRoom bookRoom)
+        {                
             await bookRoomRepository.DeleteAsync(bookRoom);
-            return Ok();
+            return Ok(bookRoom.Id);
         }
 
         //[HttpPut]

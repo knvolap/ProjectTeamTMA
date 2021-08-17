@@ -36,8 +36,7 @@ namespace ProjectTeamTMA.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Building building)
         {
-            Building building1 = new Building();
-            _mapper.Map(building, building1);
+          
             await buildingRepository.AddAsync(building);
             return Ok(building.Id);
         }
@@ -45,22 +44,16 @@ namespace ProjectTeamTMA.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(Building building)
         {
-            Building building1 = new Building();
-            _mapper.Map(building, building1);
+
             await buildingRepository.UpdateAsync(building);
             return Ok(building.Id);
         }
 
         [HttpDelete("{id}")] //xóa đúng
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Building building)
         {
-            Building building1 = await buildingRepository.GetDetailAsync(id);
-            if (building1 == null)
-            {
-                return NotFound();
-            }
-            await buildingRepository.DeleteAsync(building1);
-            return Ok();
+            await buildingRepository.DeleteAsync(building);
+            return Ok(building.Id);
         }
     }
 }

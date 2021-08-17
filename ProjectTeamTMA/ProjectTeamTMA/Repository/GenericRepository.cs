@@ -43,6 +43,11 @@ namespace ProjectTeamTMA.Repositor
 
             return await _context.Set<T>().ToListAsync();
         }
+        public async Task<T> GetDetailAsync(Guid id)
+        {
+            return await _context.Set<T>().FindAsync(id);
+        }
+
         public async Task<IEnumerable<BookRoomViewModel>> ListAsync2()
         {
             var query = from br in _context.BookRooms
@@ -62,10 +67,7 @@ namespace ProjectTeamTMA.Repositor
             }).ToListAsync();
             return result;
         }
-        public async Task<T> GetDetailAsync(object id)
-        {
-            return await _context.Set<T>().FindAsync(id);
-        }
+    
 
 
         Task<T> IGenericRepository<T>.UpdateAsync(T UpdateEntity)

@@ -60,9 +60,7 @@ namespace ProjectTeamTMA.Controllers
         //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(User user)
-        {
-            User user1 = new User();
-            _mapper.Map(user, user1);
+        {       
             await userRepostitory.AddAsync(user);
             return Ok(user.Id);
         }
@@ -70,23 +68,17 @@ namespace ProjectTeamTMA.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(User user)
         {
-            User user1 = new User();
-            _mapper.Map(user, user1);
+          
             await userRepostitory.UpdateAsync(user);
             return Ok(user.Id);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")] 
-        public async Task<IActionResult> Delete(int id)
-        {
-            User user1 = await userRepostitory.GetDetailAsync(id);
-            if (user1 == null)
-            {
-                return NotFound();
-            }
-            await userRepostitory.DeleteAsync(user1);
-            return Ok();
+        public async Task<IActionResult> Delete(User user)
+        {       
+            await userRepostitory.DeleteAsync(user);
+            return Ok(user.Id);
         }
 
     }
