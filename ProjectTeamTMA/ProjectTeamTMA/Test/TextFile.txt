@@ -1,181 +1,198 @@
-﻿using JWTAuthentication.Authentication;  
-using Microsoft.AspNetCore.Http;  
-using Microsoft.AspNetCore.Identity;  
-using Microsoft.AspNetCore.Mvc;  
-using Microsoft.Extensions.Configuration;  
-using Microsoft.IdentityModel.Tokens;  
-using System;  
-using System.Collections.Generic;  
-using System.IdentityModel.Tokens.Jwt;  
-using System.Security.Claims;  
-using System.Text;  
-using System.Threading.Tasks;  
-  
-namespace JWTAuthentication.Controllers  
-{  
-    [Route("api/[controller]")]  
-    [ApiController]  
-    public class AuthenticateController : ControllerBase  
-    {  
-        private readonly UserManager<ApplicationUser> userManager;  
-        private readonly RoleManager<IdentityRole> roleManager;  
-        private readonly IConfiguration _configuration;  
-  
-        public AuthenticateController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)  
-        {  
-            this.userManager = userManager;  
-            this.roleManager = roleManager;  
-            _configuration = configuration;  
-        }  
-  
-        [HttpPost]  
-        [Route("login")]  
-        public async Task<IActionResult> Login([FromBody] LoginModel model)  
-        {  
-            var user = await userManager.FindByNameAsync(model.Username);  
-            if (user != null && await userManager.CheckPasswordAsync(user, model.Password))  
-            {  
-                var userRoles = await userManager.GetRolesAsync(user);  
-  
-                var authClaims = new List<Claim>  
-                {  
-                    new Claim(ClaimTypes.Name, user.UserName),  
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),  
-                };  
-  
-                foreach (var userRole in userRoles)  
-                {  
-                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));  
-                }  
-  
-                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));  
-  
-                var token = new JwtSecurityToken(  
-                    issuer: _configuration["JWT:ValidIssuer"],  
-                    audience: _configuration["JWT:ValidAudience"],  
-                    expires: DateTime.Now.AddHours(3),  
-                    claims: authClaims,  
-                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)  
-                    );  
-  
-                return Ok(new  
-                {  
-                    token = new JwtSecurityTokenHandler().WriteToken(token),  
-                    expiration = token.ValidTo  
-                });  
-            }  
-            return Unauthorized();  
-        }  
-  
-        [HttpPost]  
-        [Route("register")]  
-        public async Task<IActionResult> Register([FromBody] RegisterModel model)  
-        {  
-            var userExists = await userManager.FindByNameAsync(model.Username);  
-            if (userExists != null)  
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });  
-  
-            ApplicationUser user = new ApplicationUser()  
-            {  
-                Email = model.Email,  
-                SecurityStamp = Guid.NewGuid().ToString(),  
-                UserName = model.Username  
-            };  
-            var result = await userManager.CreateAsync(user, model.Password);  
-            if (!result.Succeeded)  
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });  
-  
-            return Ok(new Response { Status = "Success", Message = "User created successfully!" });  
-        }  
-  
-        [HttpPost]  
-        [Route("register-admin")]  
-        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterModel model)  
-        {  
-            var userExists = await userManager.FindByNameAsync(model.Username);  
-            if (userExists != null)  
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });  
-  
-            ApplicationUser user = new ApplicationUser()  
-            {  
-                Email = model.Email,  
-                SecurityStamp = Guid.NewGuid().ToString(),  
-                UserName = model.Username  
-            };  
-            var result = await userManager.CreateAsync(user, model.Password);  
-            if (!result.Succeeded)  
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });  
-  
-            if (!await roleManager.RoleExistsAsync(UserRoles.Admin))  
-                await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));  
-            if (!await roleManager.RoleExistsAsync(UserRoles.User))  
-                await roleManager.CreateAsync(new IdentityRole(UserRoles.User));  
-  
-            if (await roleManager.RoleExistsAsync(UserRoles.Admin))  
-            {  
-                await userManager.AddToRoleAsync(user, UserRoles.Admin);  
-            }  
-  
-            return Ok(new Response { Status = "Success", Message = "User created successfully!" });  
-        }  
-    }  
-}  
-
-
-namespace JWT.Example.WithSQLDB
-{
-    public class TokenService
+﻿//Building
+[
     {
-        private readonly JWTAuthOptions _options;
-        private readonly UserService _userService;
+        "id": "08d9608f-646a-40ca-8fa4-db07fee496fc",
+        "buildingName": "Toàn nhà A",
+        "createdTime": "2021-08-13T07:32:38.527",
+        "updatedTime": "2021-08-13T07:32:38.527",
+    },
+    {
+        "id": "08d9608f-6924-40e9-8224-dd94b4782692",
+        "buildingName": "Toàn nhà B",
+        "createdTime": "2021-08-13T07:32:38.527",
+        "updatedTime": "2021-08-13T07:32:38.527",
+    },
+    {
+        "id": "08d9608f-6c25-4639-8a73-b059ffeb3c41",
+        "buildingName": "Toàn nhà C",
+        "createdTime": "2021-08-13T07:32:38.527",
+        "updatedTime": "2021-08-13T07:32:38.527",
+    }
+]
+//Floor
+[
+    {
+        "id": "08d9608f-d4db-4014-8c30-2ddffe7c2d91",
+        "buildingId": "08d9608f-646a-40ca-8fa4-db07fee496fc",
+        "floorName": "Tầng 1",
+        "createdTime": "2021-08-13T07:32:38.527",
+        "updatedTime": "2021-08-13T07:32:38.527",
+    },
+    {
+        "id": "08d9608f-db72-4194-8a3e-65accc581a72",
+        "buildingId": "08d9608f-646a-40ca-8fa4-db07fee496fc",
+        "floorName": "Tầng 2",
+        "createdTime": "2021-08-13T07:32:38.527",
+        "updatedTime": "2021-08-13T07:32:38.527",
+    },
+    {
+        "id": "08d9608f-ddc6-4731-8473-787113ef0c32",
+        "buildingId": "08d9608f-646a-40ca-8fa4-db07fee496fc",
+        "floorName": "Tầng 3",
+        "createdTime": "2021-08-13T07:32:38.527",
+        "updatedTime": "2021-08-13T07:32:38.527",
+    },
+    {
+        "id": "08d9608f-e908-46fe-89fa-4249b8025a21",
+        "buildingId": "08d9608f-6924-40e9-8224-dd94b4782692",
+        "floorName": "Tầng 1",
+        "createdTime": "2021-08-13T07:32:38.527",
+        "updatedTime": "2021-08-13T07:32:38.527",
+    },
+    {
+        "id": "08d9608f-eb87-4690-8617-9a1ce714dd7a",
+        "buildingId": "08d9608f-6924-40e9-8224-dd94b4782692",
+        "floorName": "Tầng 2",
+        "createdTime": "2021-08-13T07:32:38.527",
+        "updatedTime": "2021-08-13T07:32:38.527",
+    },
+    {
+        "id": "08d9608f-ed48-48e7-8567-5e9f92a2e434",
+        "buildingId": "08d9608f-6924-40e9-8224-dd94b4782692",
+        "floorName": "Tầng 3",
+        "createdTime": "2021-08-13T07:32:38.527",
+        "updatedTime": "2021-08-13T07:32:38.527",
+    }
+]
+//Room
+[
+    {
+        "id": "08d96090-07c1-4204-82d7-a27e2123304f",
+        "floorId": "08d9608f-d4db-4014-8c30-2ddffe7c2d91",
+        "roomName": "A111",
+        "area": "40m2",
+        "numberOfBeds": 2,
+        "status": approved,
+        "createdTime": "2021-07-05T00:00:00",
+        "updatedTime": "2021-07-05T00:00:00",
+    },
+    {
+        "id": "08d96090-1660-48eb-8a51-96128849d59e",
+        "floorId": "08d9608f-d4db-4014-8c30-2ddffe7c2d91",
+        "roomName": "A112",
+        "area": "40m2",
+        "numberOfBeds": 2,
+        "status": approved,
+        "createdTime": "2021-07-05T00:00:00",
+        "updatedTime": "2021-07-05T00:00:00",
+    },
+    {
+        "id": "08d96090-18f4-4f56-83b4-11c8c12a1b41",
+        "floorId": "08d9608f-d4db-4014-8c30-2ddffe7c2d91",
+        "roomName": "A113",
+        "area": "40m2",
+        "numberOfBeds": 2,
+        "status": approved,
+        "createdTime": "2021-07-05T00:00:00",
+        "updatedTime": "2021-07-05T00:00:00",
+    },
+    {
+        "id": "08d96090-2cb9-4b87-8199-9ff08c077b23",
+        "floorId": "08d9608f-db72-4194-8a3e-65accc581a72",
+        "roomName": "A211",
+        "area": "40m2",
+        "numberOfBeds": 2,
+        "status": approved,
+        "createdTime": "2021-07-05T00:00:00",
+        "updatedTime": "2021-07-05T00:00:00",
+    },
+    {
+        "id": "08d96090-3034-4ced-880e-686406ba1c0f",
+        "floorId": "08d9608f-db72-4194-8a3e-65accc581a72",
+        "roomName": "A212",
+        "area": "40m2",
+        "numberOfBeds": 2,
+        "status": approved,
+        "createdTime": "2021-07-05T00:00:00",
+        "updatedTime": "2021-07-05T00:00:00",
 
-        public TokenService(
-            IOptions<JWTAuthOptions> options,
-            UserService userService)
-        {
-            this._options = options?.Value ?? throw new ArgumentNullException(nameof(options));
-            this._userService = userService ?? throw new System.ArgumentNullException(nameof(userService));
-        }
+    },
+    {
+        "id": "08d96090-32a4-4aa8-8811-136104e0dc62",
+        "floorId": "08d9608f-db72-4194-8a3e-65accc581a72",
+        "roomName": "A213",
+        "area": "40m2",
+        "numberOfBeds": 2,
+        "status": approved,
+        "createdTime": "2021-07-05T00:00:00",
+        "updatedTime": "2021-07-05T00:00:00",
 
-        public async Task<string> GetAccessTokenAsync(string userName, string clearTextPassword, CancellationToken cancellationToken = default)
-        {
-            if (string.IsNullOrEmpty(userName))
-            {
-                throw new System.ArgumentException($"'{nameof(userName)}' cannot be null or empty.", nameof(userName));
-            }
+    }
+]
+//Role
+[
+    {
+        "id": "08d96090-4a5b-4c4d-8359-a98c937cffa5",
+        "roleName": "Admin",
+        "createdTime": "2021-07-05T00:00:00",
+        "updatedTime": "2021-07-05T00:00:00",
 
-            if (string.IsNullOrEmpty(clearTextPassword))
-            {
-                throw new System.ArgumentException($"'{nameof(clearTextPassword)}' cannot be null or empty.", nameof(clearTextPassword));
-            }
+    },
+    {
+        "id": "08d96090-4e3c-4030-8eda-4984f56420a5",
+        "roleName": "User",
+        "createdTime": "2021-07-05T00:00:00",
+        "updatedTime": "2021-07-05T00:00:00",
 
-            User validUser = await  _userService.GetValidUserAsync(userName, clearTextPassword, cancellationToken).ConfigureAwait(false);
-            if(validUser == null)
-            {
-                return null;
-            }
+    },
+    {
+        "id": "08d96090-52ce-419c-8a6e-c101161190ad",
+        "roleName": "Tester",
+        "createdTime": "2021-07-05T00:00:00",
+        "updatedTime": "2021-07-05T00:00:00",
 
-            IEnumerable<Role> roles = await _userService.GetRoles(validUser).ConfigureAwait(false);
+    }
+]
+//User
+[
+    {
+        "id": "08d96091-29d6-4c80-8019-653e8b247b24",
+        "roleId": "08d96090-4e3c-4030-8eda-4984f56420a5",
+        "name": "Tính",
+        "phone": 33333,
+        "address": "bb",
+        "userName": "vantinh",
+        "passWord": "123123",
+        "status": approved,
+        "createdTime": "2021-08-06T03:37:21.391",
+        "updatedTime": "2021-08-06T03:37:21.391",
 
-            // Package: System.IdentityModel.Tokens.Jwt
-            List<Claim> claims = new List<Claim>{
-                new Claim(JwtRegisteredClaimNames.Sub, userName),
-            };
-            foreach(Role role in roles)
-            {
-                claims.Add(new Claim("Role", role.Name));
-            }
+    },
+    {
+        "id": "08d96091-3d55-4794-8324-4eafaff67fc8",
+        "roleId": "08d96090-4a5b-4c4d-8359-a98c937cffa5",
+        "name": "Kn võ Lập",
+        "phone": 33333,
+        "address": "bb",
+        "userName": "knvolap",
+        "passWord": "123123",
+        "status": approved,
+        "createdTime": "2021-08-06T03:37:21.391",
+        "updatedTime": "2021-08-06T03:37:21.391",
 
-            JwtSecurityToken token = new JwtSecurityToken(
-                issuer: "saar",
-                audience: "saar-audience",
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(5),
-                signingCredentials: new SigningCredentials(
-                    key: new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Secret)),
-                    algorithm: SecurityAlgorithms.HmacSha256
-                )
-             );
+    },
+    {
+        "id": "08d96091-5216-4d76-88be-1785bc7d87e2",
+        "roleId": "08d96090-4e3c-4030-8eda-4984f56420a5",
+        "name": "Thanh Thảo",
+        "phone": 33333,
+        "address": "bb",
+        "userName": "thanhthao",
+        "passWord": "123123",
+        "status": approved,
+        "createdTime": "2021-08-06T03:37:21.391",
+        "updatedTime": "2021-08-06T03:37:21.391",
 
-            return (new JwtSecurityTokenHandler()).WriteToken(token);
-        }
+    }
+]
+Approved and Disapproved and Processing

@@ -77,7 +77,7 @@ namespace ProjectTeamTMA.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpDelete("{id}")] //xóa đúng
+        [HttpDelete("{id}")] 
         public async Task<IActionResult> Delete(int id)
         {
             User user1 = await userRepostitory.GetDetailAsync(id);

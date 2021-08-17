@@ -57,17 +57,47 @@ namespace ProjectTeamTMA.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut]
-        public async Task<IActionResult> BookRoomApproved(BookRoom bookRoom)
+        public async Task<IActionResult> BookRoomApproved(BookRoomViewModel model,int id)
         {
-            BookRoom bookRoom1 = await bookRoomRepository.GetDetailAsync(bookRoom.Id);
-            bookRoom1.Id = bookRoom.Id;
-            bookRoom1.personalApprovedId = bookRoom.personalApprovedId;
-            bookRoom1.issue = bookRoom.issue;
-            bookRoom1.updatedTime = DateTime.Now.Date;
-            bookRoom1.status = bookRoom.status;
-            await bookRoomRepository.AddAsync(bookRoom1);
+            BookRoom bookRoom = await bookRoomRepository.GetDetailAsync(id);         
+            if (bookRoom == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                bookRoom.personalApprovedId = model.personalApprovedId;             
+                bookRoom.issue = model.issue;            
+                bookRoom.updatedTime = DateTime.Parse(model.updatedTime);
+                bookRoom.status = model.status;
+            }    
+            await bookRoomRepository.AddAsync(bookRoom);
             return Ok();
         }
         // status = accept and reject
+
+      
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            BookRoom bookRoom = await bookRoomRepository.GetDetailAsync(id);
+            if (bookRoom == null)
+            {
+                return NotFound();
+            }
+         
+            await bookRoomRepository.DeleteAsync(bookRoom);
+            return Ok();
+        }
+
+        //[HttpPut]
+        //public async Task<IActionResult> BookRoomApproved2(BookRoom bookRoom)
+        //{
+        //    BookRoom bookRoom1 = new BookRoom();
+        //    _mapper.Map(bookRoom, bookRoom1);
+        //    await bookRoomRepository.UpdateAsync(bookRoom);
+        //    return Ok(bookRoom.Id);
+        //}
     }
 }

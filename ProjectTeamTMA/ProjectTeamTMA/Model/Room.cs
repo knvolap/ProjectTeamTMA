@@ -10,7 +10,7 @@ namespace ProjectTeamTMA.Model
        public string roomName { get; set; }
        public string area { get; set; }
        public int NumberOfBeds { get; set; }
-       public bool? status { get; set; }
+        public string status { get; set; } = "Approved";
        public DateTime createdTime { get; set; }
        public DateTime? updatedTime { get; set; }
 

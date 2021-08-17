@@ -32,8 +32,8 @@ namespace ProjectTeamTMA.Model
 
         [DataType(DataType.Time)]
         public DateTime? updatedTime { get; set; }
-        public bool? status { get; set; }
-        
+        public string status { get; set; } = "Processing";  //Approved and Disapproved and Processing
+
         public User Users { get; set; }
         public Room Rooms { get; set; }
     }

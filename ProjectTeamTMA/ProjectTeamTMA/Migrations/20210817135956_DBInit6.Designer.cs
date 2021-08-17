@@ -9,8 +9,8 @@ using ProjectTeamTMA.DBContexts;
 namespace ProjectTeamTMA.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    [Migration("20210816081745_DBInit5")]
-    partial class DBInit5
+    [Migration("20210817135956_DBInit6")]
+    partial class DBInit6
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,8 +52,8 @@ namespace ProjectTeamTMA.Migrations
                     b.Property<DateTime>("startTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<bool?>("status")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<string>("status")
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime?>("updatedTime")
                         .HasColumnType("datetime(6)");
@@ -158,8 +158,8 @@ namespace ProjectTeamTMA.Migrations
                     b.Property<string>("roomName")
                         .HasColumnType("longtext");
 
-                    b.Property<bool?>("status")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<string>("status")
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime?>("updatedTime")
                         .HasColumnType("datetime(6)");
@@ -196,8 +196,8 @@ namespace ProjectTeamTMA.Migrations
                     b.Property<Guid>("roleId")
                         .HasColumnType("char(36)");
 
-                    b.Property<bool?>("status")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<string>("status")
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime?>("updatedTime")
                         .HasColumnType("datetime(6)");

@@ -27,6 +27,7 @@ namespace ProjectTeamTMA
         public string createdTime { get; set; }
 
         public string updatedTime { get; set; }
-        public bool? status { get; set; }
+        public string status { get; set; } = "Processing";
     }
 }
+

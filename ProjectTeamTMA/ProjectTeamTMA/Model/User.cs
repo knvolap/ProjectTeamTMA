@@ -14,7 +14,7 @@ namespace ProjectTeamTMA.Model
             public string address { get; set; }
             public string userName { get; set; }
             public string passWord { get; set; }
-            public bool? status { get; set; }
+            public string status { get; set; } // Approved and Disapproved and Processing
             public DateTime createdTime { get; set; }
             public DateTime? updatedTime { get; set; }
 

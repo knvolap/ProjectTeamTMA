@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjectTeamTMA.Migrations
 {
-    public partial class DBInit5 : Migration
+    public partial class DBInit6 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -79,7 +79,8 @@ namespace ProjectTeamTMA.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     passWord = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    status = table.Column<bool>(type: "tinyint(1)", nullable: true),
+                    status = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     createdTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     updatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
@@ -105,7 +106,8 @@ namespace ProjectTeamTMA.Migrations
                     area = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     NumberOfBeds = table.Column<int>(type: "int", nullable: false),
-                    status = table.Column<bool>(type: "tinyint(1)", nullable: true),
+                    status = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     createdTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     updatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
@@ -136,7 +138,8 @@ namespace ProjectTeamTMA.Migrations
                     endTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     createdTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     updatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    status = table.Column<bool>(type: "tinyint(1)", nullable: true)
+                    status = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
