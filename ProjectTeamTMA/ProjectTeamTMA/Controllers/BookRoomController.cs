@@ -26,33 +26,34 @@ namespace ProjectTeamTMA.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BookRoom>>> List()
+        public async Task<ActionResult<IEnumerable<BookRoomViewModel>>> List()
         {
-            var bookRoom1 = await bookRoomRepository.ListAsync();
-            IEnumerable<BookRoom> bookRoom = new List<BookRoom>();
+            var bookRoom1 = await bookRoomRepository.ListAsync2();
+            IEnumerable<BookRoomViewModel> bookRoom = new List<BookRoomViewModel>();
             _mapper.Map(bookRoom1, bookRoom);
             return Ok(bookRoom);
         }
 
         [Authorize(Roles = "User")]
         [HttpPost]
-        public async Task<IActionResult> Create(BookRoom bookRoom)
+        public async Task<IActionResult> Create(BookRoomViewModel model)
         {
-
-            BookRoom book = new BookRoom()
-            {
-                personBookingId = bookRoom.personBookingId,
-                roomId = bookRoom.roomId,
-                issue = bookRoom.issue,
-                startDay = DateTime.Now.Date,
-                endDate = DateTime.Now.Date,
-                startTime = DateTime.Parse(DateTime.Now.TimeOfDay.ToString()),
-                endTime = DateTime.Parse(DateTime.Now.TimeOfDay.ToString()),
-                createdTime = DateTime.Now.Date,
+            BookRoom bookRoom = new BookRoom()
+            {            
+                personBookingId = model.personBookingId,
+                roomId = model.roomId,
+                issue = model.issue,
+                startDay = DateTime.Parse(model.startDay),
+                endDate = DateTime.Parse(model.endDate),
+                startTime = DateTime.Parse(model.startTime),
+                endTime = DateTime.Parse(model.endDate),
+                createdTime = DateTime.Parse(model.createdTime),
+                updatedTime = DateTime.Parse(model.updatedTime)
             };
-            await bookRoomRepository.AddAsync(book);
+            await bookRoomRepository.AddAsync(bookRoom);
             return Ok(bookRoom.Id);
         }
+        //check trùng date thì k cho đặt phòng
 
         [Authorize(Roles = "Admin")]
         [HttpPut]
