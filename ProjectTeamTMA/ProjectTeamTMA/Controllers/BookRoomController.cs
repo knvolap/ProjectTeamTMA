@@ -69,7 +69,7 @@ namespace ProjectTeamTMA.Controllers
             await bookRoomRepository.UpdateAsync(bookRoom);
             return Ok(bookRoom.Id);
         }
-        // status = accept and reject
+        // status = Accept and Reject
 
       
 
@@ -80,13 +80,6 @@ namespace ProjectTeamTMA.Controllers
             return Ok(bookRoom.Id);
         }
 
-        //[HttpPut]
-        //public async Task<IActionResult> BookRoomApproved2(BookRoom bookRoom)
-        //{
-        //    BookRoom bookRoom1 = new BookRoom();
-        //    _mapper.Map(bookRoom, bookRoom1);
-        //    await bookRoomRepository.UpdateAsync(bookRoom);
-        //    return Ok(bookRoom.Id);
-        //}
+      
     }
 }
