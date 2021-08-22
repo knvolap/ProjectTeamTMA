@@ -52,10 +52,11 @@ namespace ProjectTeamTMA.Controllers
             else return Ok("Building name already exists");
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update(Building building)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id,[FromBody] Building building)
         {
             int i = 0;
+            var buildingEdit = myDbContext.Buildings.Where(b => b.Id == id).FirstOrDefault();
             var listBuilding = myDbContext.Buildings.ToList();
             foreach (var b in listBuilding)
             {
@@ -66,8 +67,11 @@ namespace ProjectTeamTMA.Controllers
             }
             if (i == 0)
             {
-                await buildingRepository.UpdateAsync(building);
-                return Ok(building);
+                buildingEdit.buildingName = building.buildingName;
+                buildingEdit.createdTime = building.createdTime;
+                buildingEdit.updatedTime = building.updatedTime;
+                await buildingRepository.UpdateAsync(buildingEdit);
+                return Ok(buildingEdit);
             }
             else return Ok("Building name already exists");
         }
