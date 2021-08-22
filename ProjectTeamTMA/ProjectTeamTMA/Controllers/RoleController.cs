@@ -34,31 +34,22 @@ namespace ProjectTeamTMA.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> Create(Role role)
-        {
-            Role role1 = new Role();
-            _mapper.Map(role, role1);
+        {         
             await roleRepository.AddAsync(role);
-            return Ok(role.roleID);
+            return Ok(role.Id);
         }
         [HttpPut]
         public async Task<IActionResult> Update(Role role)
-        {
-            Role role1 = new Role();
-            _mapper.Map(role, role1);
+        {          
             await roleRepository.UpdateAsync(role);
-            return Ok(role.roleID);
+            return Ok(role.Id);
         }
 
-        [HttpDelete("{id}")] //xóa đúng
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}")] 
+        public async Task<IActionResult> Delete(Role role)
         {
-            Role role1 = await roleRepository.GetDetailAsync(id);
-            if (role1 == null)
-            {
-                return NotFound();
-            }
-            await roleRepository.DeleteAsync(role1);
-            return Ok();
+            await roleRepository.UpdateAsync(role);
+            return Ok(role.Id);
         }
 
 

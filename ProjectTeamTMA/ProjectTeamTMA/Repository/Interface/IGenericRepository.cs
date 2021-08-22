@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectTeamTMA.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,8 +12,10 @@ namespace ProjectTeamTMA.Repository.Interface
         Task<T> AddAsync(T newEntity);
         Task<T> UpdateAsync(T UpdateEntity);
         Task<T> DeleteAsync(T DeleteEntity);
-        Task<T> GetDetailAsync(object id);
+        Task<T> GetDetailAsync(Guid id);
         Task<IEnumerable<T>> ListAsync();
+
+        Task<IEnumerable<BookRoomViewModel>> ListAsync2();
 
         //Task<IEnumerable<Task>> GetTaskList();
         //Task<Task> Create(Task task);

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTeamTMA.DBContexts;
@@ -13,46 +14,66 @@ namespace ProjectTeamTMA.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class BuildingController : ControllerBase
     {
         private readonly BuildingRepository buildingRepository;
-        private readonly IMapper _mapper; 
-        private MyDBContext myDbContext;
-        public BuildingController(MyDBContext _context, IMapper mapper)
+        private readonly MyDBContext myDbContext;
+        public BuildingController(MyDBContext _context)
         {
-            _mapper = mapper;
             buildingRepository = new BuildingRepository(_context);
+            this.myDbContext = _context;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Building>>> List()
         {
             var building1 = await buildingRepository.ListAsync();
-            IEnumerable<Building> building = new List<Building>();
-            _mapper.Map(building1, building);
-            return Ok(building);
+            return Ok(building1);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(Building building)
         {
-            Building building1 = new Building();
-            _mapper.Map(building, building1);
-            await buildingRepository.AddAsync(building);
-            return Ok(building.Id);
+            int i = 0;
+            var listBuilding = myDbContext.Buildings.ToList();
+            foreach(var b in listBuilding)
+            {
+                if (b.buildingName == building.buildingName)
+                {
+                    i++;
+                }
+            }
+            if (i==0)
+            {
+                await buildingRepository.AddAsync(building);
+                return Ok(building);
+            }
+            else return Ok("Building name already exists");
         }
 
         [HttpPut]
         public async Task<IActionResult> Update(Building building)
         {
-            Building building1 = new Building();
-            _mapper.Map(building, building1);
-            await buildingRepository.UpdateAsync(building);
-            return Ok(building.Id);
+            int i = 0;
+            var listBuilding = myDbContext.Buildings.ToList();
+            foreach (var b in listBuilding)
+            {
+                if (b.buildingName == building.buildingName)
+                {
+                    i++;
+                }
+            }
+            if (i == 0)
+            {
+                await buildingRepository.UpdateAsync(building);
+                return Ok(building);
+            }
+            else return Ok("Building name already exists");
         }
 
         [HttpDelete("{id}")] //xóa đúng
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             Building building1 = await buildingRepository.GetDetailAsync(id);
             if (building1 == null)

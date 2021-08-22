@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectTeamTMA.DBContexts;
@@ -10,8 +9,8 @@ using ProjectTeamTMA.DBContexts;
 namespace ProjectTeamTMA.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    [Migration("20210805100444_DBInit1")]
-    partial class DBInit1
+    [Migration("20210821151045_DBInit")]
+    partial class DBInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,51 +21,45 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.BookRoom", b =>
                 {
-                    b.Property<int>("bookRoomId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("RoomsroomId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UsersuserId")
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("createdTime")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("endDate")
-                        .HasColumnType("datetime");
+                    b.Property<DateTime>("endDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<TimeSpan>("endTime")
+                        .HasColumnType("time(6)");
 
                     b.Property<string>("issue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("longtext");
 
-                    b.Property<int>("personBookingId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("personBookingId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<int>("personalApprovedId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("personalApprovedId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<int>("roomId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("roomId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("startDay")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
-                    b.Property<ulong?>("status")
-                        .HasColumnType("bit");
+                    b.Property<TimeSpan>("startTime")
+                        .HasColumnType("time(6)");
+
+                    b.Property<string>("status")
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime?>("updatedTime")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
-                    b.HasKey("bookRoomId")
+                    b.HasKey("Id")
                         .HasName("PK_BookRooms");
-
-                    b.HasIndex("RoomsroomId");
-
-                    b.HasIndex("UsersuserId");
 
                     b.HasIndex("personBookingId");
 
@@ -77,20 +70,18 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Building", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("buildingName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("createdTime")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("updatedTime")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id")
                         .HasName("PK_Buildings");
@@ -100,31 +91,24 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Floor", b =>
                 {
-                    b.Property<int>("floorId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("char(36)");
 
-                    b.Property<int?>("BuildingsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("buildingId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("buildingId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("createdTime")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("floorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime?>("updatedTime")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
-                    b.HasKey("floorId")
+                    b.HasKey("Id")
                         .HasName("PK_Floors");
-
-                    b.HasIndex("BuildingsId");
 
                     b.HasIndex("buildingId");
 
@@ -133,22 +117,20 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Role", b =>
                 {
-                    b.Property<int>("roleID")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("createdTime")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("roleName")
-                        .IsRequired()
-                        .HasColumnType("char(100)");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime?>("updatedTime")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
-                    b.HasKey("roleID")
+                    b.HasKey("Id")
                         .HasName("PK_IdRole");
 
                     b.ToTable("Role");
@@ -156,41 +138,33 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.Room", b =>
                 {
-                    b.Property<int>("roomId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("FloorsfloorId")
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("NumberOfBeds")
                         .HasColumnType("int");
 
                     b.Property<string>("area")
-                        .IsRequired()
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("createdTime")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
-                    b.Property<int>("floorId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("floorId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("roomName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("longtext");
 
-                    b.Property<ulong?>("status")
-                        .HasColumnType("bit");
+                    b.Property<string>("status")
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime?>("updatedTime")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
-                    b.HasKey("roomId")
-                        .HasName("PK_Customers");
-
-                    b.HasIndex("FloorsfloorId");
+                    b.HasKey("Id")
+                        .HasName("PK_Rooms");
 
                     b.HasIndex("floorId");
 
@@ -199,49 +173,39 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.User", b =>
                 {
-                    b.Property<int>("userId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("RolesroleID")
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("createdTime")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("passWord")
-                        .IsRequired()
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("phone")
                         .HasColumnType("int");
 
-                    b.Property<int>("roleId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("roleId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<ulong?>("status")
-                        .HasColumnType("bit");
+                    b.Property<string>("status")
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime?>("updatedTime")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("userName")
-                        .IsRequired()
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
-                    b.HasKey("userId")
+                    b.HasKey("Id")
                         .HasName("PK_Users");
-
-                    b.HasIndex("RolesroleID");
 
                     b.HasIndex("roleId");
 
@@ -250,26 +214,16 @@ namespace ProjectTeamTMA.Migrations
 
             modelBuilder.Entity("ProjectTeamTMA.Model.BookRoom", b =>
                 {
-                    b.HasOne("ProjectTeamTMA.Model.Room", "Rooms")
-                        .WithMany("BookRooms")
-                        .HasForeignKey("RoomsroomId");
-
                     b.HasOne("ProjectTeamTMA.Model.User", "Users")
                         .WithMany("BookRooms")
-                        .HasForeignKey("UsersuserId");
-
-                    b.HasOne("ProjectTeamTMA.Model.User", null)
-                        .WithMany()
                         .HasForeignKey("personBookingId")
-                        .HasConstraintName("FK_BookRooms_Users")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("ProjectTeamTMA.Model.Room", null)
-                        .WithMany()
+                    b.HasOne("ProjectTeamTMA.Model.Room", "Rooms")
+                        .WithMany("BookRooms")
                         .HasForeignKey("roomId")
-                        .HasConstraintName("FK_BookRooms_Rooms")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Rooms");
@@ -281,12 +235,7 @@ namespace ProjectTeamTMA.Migrations
                 {
                     b.HasOne("ProjectTeamTMA.Model.Building", "Buildings")
                         .WithMany("Floors")
-                        .HasForeignKey("BuildingsId");
-
-                    b.HasOne("ProjectTeamTMA.Model.Building", null)
-                        .WithMany()
                         .HasForeignKey("buildingId")
-                        .HasConstraintName("FK_Buildings_Floors")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -297,12 +246,7 @@ namespace ProjectTeamTMA.Migrations
                 {
                     b.HasOne("ProjectTeamTMA.Model.Floor", "Floors")
                         .WithMany("Rooms")
-                        .HasForeignKey("FloorsfloorId");
-
-                    b.HasOne("ProjectTeamTMA.Model.Floor", null)
-                        .WithMany()
                         .HasForeignKey("floorId")
-                        .HasConstraintName("FK_Rooms_Roles")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -313,12 +257,7 @@ namespace ProjectTeamTMA.Migrations
                 {
                     b.HasOne("ProjectTeamTMA.Model.Role", "Roles")
                         .WithMany("Users")
-                        .HasForeignKey("RolesroleID");
-
-                    b.HasOne("ProjectTeamTMA.Model.Role", null)
-                        .WithMany()
                         .HasForeignKey("roleId")
-                        .HasConstraintName("FK_Users_Roles")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
