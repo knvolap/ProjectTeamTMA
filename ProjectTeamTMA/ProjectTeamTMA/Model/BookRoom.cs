@@ -18,24 +18,22 @@ namespace ProjectTeamTMA.Model
         public DateTime startDay { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        public DateTime? endDate { get; set; }
+        public DateTime endDate { get; set; }
 
         [DataType(DataType.Time)]
-        public DateTime startTime { get; set; }
+        public TimeSpan startTime { get; set; }
 
         [DataType(DataType.Time)]
-        public DateTime? endTime { get; set; }
+        public TimeSpan endTime { get; set; }
 
         [DataType(DataType.Time)]
         public DateTime createdTime { get; set; }
 
         [DataType(DataType.Time)]
-        public DateTime? updatedTime { get; set; }
-        public string status { get; set; } = "Processing";  //Approved and Disapproved and Processing
+        public DateTime updatedTime { get; set; }
+        public string status { get; set; } = "Processing";//Approved and Disapproved and Processing
 
         public User Users { get; set; }
         public Room Rooms { get; set; }
     }
 }
-

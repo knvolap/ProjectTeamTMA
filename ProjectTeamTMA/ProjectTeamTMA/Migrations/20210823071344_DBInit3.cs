@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjectTeamTMA.Migrations
 {
-    public partial class DBInit6 : Migration
+    public partial class DBInit3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -133,11 +133,11 @@ namespace ProjectTeamTMA.Migrations
                     issue = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     startDay = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    endDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    startTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    endTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    endDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    startTime = table.Column<TimeSpan>(type: "time(6)", nullable: false),
+                    endTime = table.Column<TimeSpan>(type: "time(6)", nullable: false),
                     createdTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    updatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    updatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },

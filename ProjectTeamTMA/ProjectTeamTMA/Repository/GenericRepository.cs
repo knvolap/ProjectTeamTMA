@@ -62,18 +62,15 @@ namespace ProjectTeamTMA.Repositor
                 issue = x.br.issue,
                 status = x.br.status,
                 startDay = x.br.startDay.ToString("dd/MM/yyyy"),
-                endDate = x.br.endDate.HasValue ? x.br.endDate.Value.ToString("dd/MM/yyyy"):"",
-                startTime = x.br.startTime.ToString("hh:mm"),
-                endTime = x.br.endTime.HasValue ? x.br.endTime.Value.ToString("hh:mm") : "",
+                endDate = x.br.endDate.ToString("dd/MM/yyyy"),
+                startTime = x.br.startTime.ToString("hh:mm:ss"),
+                endTime = x.br.endTime.ToString("hh:mm:ss"),             
                 createdTime = x.br.createdTime.ToString("dd/MM/yyyy"),
-                updatedTime = x.br.updatedTime.HasValue ? x.br.endTime.Value.ToString("dd/MM/yyyy"): ""
-
+                updatedTime = x.br.updatedTime.ToString("dd/MM/yyyy:hh:mm"),
             }).ToListAsync();
             return result;
         }
     
-
-
         Task<T> IGenericRepository<T>.UpdateAsync(T UpdateEntity)
         {
             throw new NotImplementedException();

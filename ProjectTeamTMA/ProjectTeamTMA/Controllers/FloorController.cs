@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTeamTMA.DBContexts;
@@ -9,18 +10,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
+
 namespace ProjectTeamTMA.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize(Roles = "Admin")]
     public class FloorController : ControllerBase
     {
         private readonly FloorRepository floorRepository;
-        private readonly IMapper _mapper;
         private MyDBContext myDbContext;
-        public FloorController(MyDBContext _context, IMapper mapper)
+        public FloorController(MyDBContext _context)
         {
-            _mapper = mapper;
+            this.myDbContext = _context;
             floorRepository = new FloorRepository(_context);
         }
 
@@ -28,27 +31,52 @@ namespace ProjectTeamTMA.Controllers
         public async Task<ActionResult<IEnumerable<Floor>>> List()
         {
             var floor1 = await floorRepository.ListAsync();
-            IEnumerable<Floor> floor = new List<Floor>();
-            _mapper.Map(floor1, floor);
-            return Ok(floor);
+            return Ok(floor1);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(Floor floor)
         {
-            Floor floor1 = new Floor();
-            _mapper.Map(floor, floor1);
-            await floorRepository.AddAsync(floor);
-            return Ok(floor.Id);
+            int i = 0;
+            var listFloor = myDbContext.Floors.ToList();
+            foreach (var f in listFloor)
+            {
+                if (f.floorName == floor.floorName)
+                {
+                    i++;
+                }
+            }
+            if (i == 0)
+            {
+                await floorRepository.AddAsync(floor);
+                return Ok(floor);
+            }
+            else return Ok("Floor name already exists");
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update(Floor floor)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] Floor floor)
         {
-            Floor floor1 = new Floor();
-            _mapper.Map(floor, floor1);
-            await floorRepository.UpdateAsync(floor);
-            return Ok(floor.Id);
+            int i = 0;
+            var floorEdit = myDbContext.Floors.Where(f => f.Id == id).FirstOrDefault();
+            var listFloor = myDbContext.Floors.ToList();
+            foreach (var f in listFloor)
+            {
+                if (f.floorName == floor.floorName)
+                {
+                    i++;
+                }
+            }
+            if (i == 0)
+            {
+                floorEdit.buildingId = floor.buildingId;
+                floorEdit.floorName = floor.floorName;
+                floorEdit.createdTime = floor.createdTime;
+                floorEdit.updatedTime = floor.updatedTime;
+                await floorRepository.UpdateAsync(floorEdit);
+                return Ok(floorEdit);
+            }
+            else return Ok("Floor name already exists");
         }
 
         [HttpDelete("{id}")] //xóa đúng
@@ -64,3 +92,4 @@ namespace ProjectTeamTMA.Controllers
         }
     }
 }
+

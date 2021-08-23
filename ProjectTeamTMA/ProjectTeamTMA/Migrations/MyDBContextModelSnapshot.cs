@@ -26,11 +26,11 @@ namespace ProjectTeamTMA.Migrations
                     b.Property<DateTime>("createdTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("endDate")
+                    b.Property<DateTime>("endDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("endTime")
-                        .HasColumnType("datetime(6)");
+                    b.Property<TimeSpan>("endTime")
+                        .HasColumnType("time(6)");
 
                     b.Property<string>("issue")
                         .HasColumnType("longtext");
@@ -47,13 +47,13 @@ namespace ProjectTeamTMA.Migrations
                     b.Property<DateTime>("startDay")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("startTime")
-                        .HasColumnType("datetime(6)");
+                    b.Property<TimeSpan>("startTime")
+                        .HasColumnType("time(6)");
 
                     b.Property<string>("status")
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime?>("updatedTime")
+                    b.Property<DateTime>("updatedTime")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id")

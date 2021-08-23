@@ -9,8 +9,8 @@ using ProjectTeamTMA.DBContexts;
 namespace ProjectTeamTMA.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    [Migration("20210818105043_DBInit6")]
-    partial class DBInit6
+    [Migration("20210823071344_DBInit3")]
+    partial class DBInit3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,11 +28,11 @@ namespace ProjectTeamTMA.Migrations
                     b.Property<DateTime>("createdTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("endDate")
+                    b.Property<DateTime>("endDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("endTime")
-                        .HasColumnType("datetime(6)");
+                    b.Property<TimeSpan>("endTime")
+                        .HasColumnType("time(6)");
 
                     b.Property<string>("issue")
                         .HasColumnType("longtext");
@@ -49,13 +49,13 @@ namespace ProjectTeamTMA.Migrations
                     b.Property<DateTime>("startDay")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("startTime")
-                        .HasColumnType("datetime(6)");
+                    b.Property<TimeSpan>("startTime")
+                        .HasColumnType("time(6)");
 
                     b.Property<string>("status")
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime?>("updatedTime")
+                    b.Property<DateTime>("updatedTime")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id")

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTeamTMA.DBContexts;
@@ -13,14 +14,14 @@ namespace ProjectTeamTMA.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize(Roles = "Admin")]
     public class RoomController : ControllerBase
     {
         private readonly RoomRepository roomRepository;
-        private readonly IMapper _mapper;
         private MyDBContext myDbContext;
-        public RoomController(MyDBContext _context, IMapper mapper)
+        public RoomController(MyDBContext _context)
         {
-            _mapper = mapper;
+            this.myDbContext = _context;
             roomRepository = new RoomRepository(_context);
         }
 
@@ -28,30 +29,66 @@ namespace ProjectTeamTMA.Controllers
         public async Task<ActionResult<IEnumerable<Room>>> List()
         {
             var room1 = await roomRepository.ListAsync();
-            IEnumerable<Room> room = new List<Room>();
-            _mapper.Map(room1, room);
-            return Ok(room);
+            return Ok(room1);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(Room room)
-        {         
-            await roomRepository.AddAsync(room);
-            return Ok(room.Id);
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> Update(Room room)
-        {        
-            await roomRepository.UpdateAsync(room);
-            return Ok(room.Id);
-        }
-
-        [HttpDelete("{id}")] 
-        public async Task<IActionResult> Delete(Room room)
         {
+            int i = 0;
+            var listRoom = myDbContext.Rooms.ToList();
+            foreach (var r in listRoom)
+            {
+                if (r.roomName == room.roomName)
+                {
+                    i++;
+                }
+            }
+            if (i == 0)
+            {
+                await roomRepository.AddAsync(room);
+                return Ok(room);
+            }
+            else return Ok("Room name already exists");
+
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] Room room)
+        {
+            int i = 0;
+            var roomEdit = myDbContext.Rooms.Where(r => r.Id == id).FirstOrDefault();
+            var listRoom = myDbContext.Rooms.ToList();
+            foreach (var r in listRoom)
+            {
+                if (r.roomName == room.roomName)
+                {
+                    i++;
+                }
+            }
+            if (i == 0)
+            {
+                roomEdit.floorId = room.floorId;
+                roomEdit.roomName = room.roomName;
+                roomEdit.createdTime = room.createdTime;
+                roomEdit.updatedTime = room.updatedTime;
+                await roomRepository.UpdateAsync(roomEdit);
+                return Ok(roomEdit);
+            }
+            else return Ok("Room name already exists");
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            Room room = await roomRepository.GetDetailAsync(id);
+            if (room == null)
+            {
+                return NotFound();
+            }
             await roomRepository.DeleteAsync(room);
-            return Ok(room.Id);
+            return Ok();
         }
     }
 }
