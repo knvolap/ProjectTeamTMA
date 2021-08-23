@@ -38,6 +38,7 @@ namespace ProjectTeamTMA.Controllers
             await roleRepository.AddAsync(role);
             return Ok(role.Id);
         }
+
         [HttpPut]
         public async Task<IActionResult> Update(Role role)
         {          

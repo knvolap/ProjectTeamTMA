@@ -61,8 +61,7 @@ namespace ProjectTeamTMA.Migrations
 
                     b.HasIndex("personBookingId");
 
-                    b.HasIndex("roomId")
-                        .IsUnique();
+                    b.HasIndex("roomId");
 
                     b.ToTable("BookRoom");
                 });
@@ -220,8 +219,8 @@ namespace ProjectTeamTMA.Migrations
                         .IsRequired();
 
                     b.HasOne("ProjectTeamTMA.Model.Room", "Rooms")
-                        .WithOne("BookRooms")
-                        .HasForeignKey("ProjectTeamTMA.Model.BookRoom", "roomId")
+                        .WithMany("BookRooms")
+                        .HasForeignKey("roomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

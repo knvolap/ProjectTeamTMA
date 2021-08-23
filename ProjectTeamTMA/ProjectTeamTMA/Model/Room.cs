@@ -15,7 +15,7 @@ namespace ProjectTeamTMA.Model
        public DateTime? updatedTime { get; set; }
 
        public Floor Floors { get; set; }
-       public BookRoom BookRooms { get; set; }
-        
+       public List<BookRoom> BookRooms { get; set; }
+
     }
 }

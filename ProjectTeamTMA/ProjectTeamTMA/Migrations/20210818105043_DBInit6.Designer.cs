@@ -9,7 +9,7 @@ using ProjectTeamTMA.DBContexts;
 namespace ProjectTeamTMA.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    [Migration("20210817135956_DBInit6")]
+    [Migration("20210818105043_DBInit6")]
     partial class DBInit6
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,8 +63,7 @@ namespace ProjectTeamTMA.Migrations
 
                     b.HasIndex("personBookingId");
 
-                    b.HasIndex("roomId")
-                        .IsUnique();
+                    b.HasIndex("roomId");
 
                     b.ToTable("BookRoom");
                 });
@@ -222,8 +221,8 @@ namespace ProjectTeamTMA.Migrations
                         .IsRequired();
 
                     b.HasOne("ProjectTeamTMA.Model.Room", "Rooms")
-                        .WithOne("BookRooms")
-                        .HasForeignKey("ProjectTeamTMA.Model.BookRoom", "roomId")
+                        .WithMany("BookRooms")
+                        .HasForeignKey("roomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

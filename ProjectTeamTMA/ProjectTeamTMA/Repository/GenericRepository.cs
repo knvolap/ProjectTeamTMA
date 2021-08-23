@@ -33,6 +33,7 @@ namespace ProjectTeamTMA.Repositor
             _context.Set<T>().Update(UpdateEntity);
             await _context.SaveChangesAsync();
         }
+
         public async Task DeleteAsync(T DeleteEntity)
         {
             _context.Set<T>().Remove(DeleteEntity);
@@ -56,14 +57,17 @@ namespace ProjectTeamTMA.Repositor
             {
                 Id = x.br.Id,
                 personBookingId = x.br.personBookingId,
-                roomId = x.br.roomId,
+                personalApprovedId = x.br.personalApprovedId,
+                roomId = x.br.roomId,             
                 issue = x.br.issue,
+                status = x.br.status,
                 startDay = x.br.startDay.ToString("dd/MM/yyyy"),
                 endDate = x.br.endDate.HasValue ? x.br.endDate.Value.ToString("dd/MM/yyyy"):"",
                 startTime = x.br.startTime.ToString("hh:mm"),
                 endTime = x.br.endTime.HasValue ? x.br.endTime.Value.ToString("hh:mm") : "",
-                createdTime = x.br.createdTime.ToString("dd/MM/yyyy:hh:mm"),
-                updatedTime = x.br.updatedTime.HasValue ? x.br.endTime.Value.ToString("dd/MM/yyyy:hh:mm"): ""
+                createdTime = x.br.createdTime.ToString("dd/MM/yyyy"),
+                updatedTime = x.br.updatedTime.HasValue ? x.br.endTime.Value.ToString("dd/MM/yyyy"): ""
+
             }).ToListAsync();
             return result;
         }

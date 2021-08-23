@@ -99,9 +99,15 @@ namespace ProjectTeamTMA.DBContexts
             modelBuilder.Entity<BookRoom>().HasOne(b => b.Users).WithMany(b => b.BookRooms).HasForeignKey(p => p.personBookingId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<User>().HasOne(b => b.Roles).WithMany(b => b.Users).HasForeignKey(p => p.roleId).OnDelete(DeleteBehavior.NoAction);
 
-            // liên kết 1-1
-            modelBuilder.Entity<Room>().HasOne<BookRoom>(s => s.BookRooms)
-                .WithOne(ad => ad.Rooms).HasForeignKey<BookRoom>(ad => ad.roomId);
+            //liên kết  N vs 1
+            modelBuilder.Entity<Room>().HasMany<BookRoom>(s => s.BookRooms)
+                .WithOne(ad => ad.Rooms).HasForeignKey(ad => ad.roomId);
+
+            //// liên kết 1-1
+            //modelBuilder.Entity<Room>().HasOne<BookRoom>(s => s.BookRooms)
+            //    .WithOne(ad => ad.Rooms).HasForeignKey<BookRoom>(ad => ad.roomId);
+
+
 
 
             //modelBuilder.Entity<Floor>().HasOne<Building>().WithMany().HasPrincipalKey(b => b.Id).HasForeignKey(f => f.buildingId)

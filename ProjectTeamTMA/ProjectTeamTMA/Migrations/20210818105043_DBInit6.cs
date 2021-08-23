@@ -166,8 +166,7 @@ namespace ProjectTeamTMA.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_BookRoom_roomId",
                 table: "BookRoom",
-                column: "roomId",
-                unique: true);
+                column: "roomId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Floor_buildingId",
