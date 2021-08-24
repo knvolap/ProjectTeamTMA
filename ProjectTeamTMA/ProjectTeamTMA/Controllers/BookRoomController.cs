@@ -27,7 +27,7 @@ namespace ProjectTeamTMA.Controllers
             this.myDbContext = _context;
         }
 
-      
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookRoom>>> List1()
         {
@@ -57,44 +57,44 @@ namespace ProjectTeamTMA.Controllers
 
 
 
-        ////[Authorize(Roles = "User,Admin")]
-        //[HttpPost]
-        //public async Task<IActionResult> Create(BookRoomViewModel model)
-        //{
-        //    BookRoom bookRoom = new BookRoom();
-        //    var startDayBr = DateTime.Parse(model.startDay);
-        //    var endDateBr = DateTime.Parse(model.endDate);
-
-        //    //string Kq = DateTime.Compare(model.endDate);
-        //    if (startDayBr > endDateBr)
-        //    {
-        //        //return mgs.Message = "Please enter the Day time";
-        //        return Redirect("Please enter the Day time");
-        //    }
-        //    else
-        //    {
-        //        bookRoom.personBookingId = model.personBookingId;
-        //        bookRoom.roomId = model.roomId;
-        //        bookRoom.issue = model.issue;
-        //        bookRoom.startDay = DateTime.Parse(model.startDay);
-        //        bookRoom.endDate = DateTime.Parse(model.endDate);
-        //        bookRoom.startTime = TimeSpan.Parse(model.startTime);
-        //        bookRoom.endTime = TimeSpan.Parse(model.endTime);
-        //        bookRoom.createdTime = DateTime.Parse(model.createdTime);
-        //        bookRoom.updatedTime = DateTime.Parse(model.updatedTime);
-        //    }
-        //    await bookRoomRepository.AddAsync(bookRoom);
-        //    return Ok(bookRoom.Id);
-        //}
-
         //[Authorize(Roles = "User,Admin")]
-        [HttpPost]
-        public async Task<IActionResult> Create(BookRoomViewModel model)
+        [HttpPost("User1")]
+        public async Task<IActionResult> Create1(BookRoomViewModel model)
         {
+            string massge = "";
             BookRoom bookRoom = new BookRoom();
             var startDayBr = DateTime.Parse(model.startDay);
             var endDateBr = DateTime.Parse(model.endDate);
 
+            //string Kq = DateTime.Compare(model.endDate);
+            if (startDayBr > endDateBr)
+            {          
+                massge = "Please enter the Day time";          
+            }
+            else
+            {
+                bookRoom.personBookingId = model.personBookingId;
+                bookRoom.roomId = model.roomId;
+                bookRoom.issue = model.issue;
+                bookRoom.startDay = DateTime.Parse(model.startDay);
+                bookRoom.endDate = DateTime.Parse(model.endDate);
+                bookRoom.startTime = TimeSpan.Parse(model.startTime);
+                bookRoom.endTime = TimeSpan.Parse(model.endTime);
+                bookRoom.createdTime = DateTime.Parse(model.createdTime);
+                bookRoom.updatedTime = DateTime.Parse(model.updatedTime);
+            }
+            await bookRoomRepository.AddAsync(bookRoom);
+            return Ok(bookRoom.Id);
+        }
+
+        //[Authorize(Roles = "User,Admin")]
+        [HttpPost("User2")]
+        public async Task<IActionResult> Create2(BookRoomViewModel model)
+        {
+            string massge = "";
+            BookRoom bookRoom = new BookRoom();
+            var startDayBr = DateTime.Parse(model.startDay);
+            var endDateBr = DateTime.Parse(model.endDate);
             var starTimebr = TimeSpan.Parse(model.startTime);
             var endTimeBr = TimeSpan.Parse(model.endTime);
 
@@ -106,12 +106,12 @@ namespace ProjectTeamTMA.Controllers
             {
                 if (item.endDate > startDayBr)
                 {
-                    return Redirect("Please enter the Day time");
+                    massge = "Please enter the Day time";
+                   
                 }
-               
                 else if (startDayBr >= endDateBr)
                 {
-                    return Redirect("Please enter the Day time");
+                    massge = "Please enter the Day time";
                 }
                 //else if (item.endTime > starTimebr)
                 //{
@@ -119,7 +119,7 @@ namespace ProjectTeamTMA.Controllers
                 //}
                 else if (starTimebr >= endTimeBr)
                 {
-                    return Redirect("Please enter the Day time");
+                    massge = "Please enter the Day time";
                 }
                 else
                 {
@@ -139,7 +139,7 @@ namespace ProjectTeamTMA.Controllers
         }
 
         //[Authorize(Roles = "Admin")]
-        [HttpPut("{id}")]
+        [HttpPut("Admin/{id}")]
         public async Task<IActionResult> BookRoomApproved(BookRoomViewModel model, Guid id)
         {
             var bookRoom = await myDbContext.BookRooms.FindAsync(id);
@@ -161,71 +161,64 @@ namespace ProjectTeamTMA.Controllers
         // status = Accept and Reject
 
 
-        //[Authorize(Roles = "User")]
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Update(Guid id, [FromBody] BookRoomViewModel bookRoom)
-        //{
-        //    string massge = "";
-        //    var claimsIdentity = this.User.Identity as ClaimsIdentity;
-        //    var userRole = claimsIdentity.FindFirst(ClaimTypes.Role)?.Value;
-        //    var boookRoomEdit = myDbContext.BookRooms.Where(b => b.Id == id).FirstOrDefault();
-        //    string st = bookRoom.status;
-        //    var check = from r in myDbContext.BookRooms
-        //                where ((r.roomId == bookRoom.roomId)
-        //                && (r.Id != id)
-        //                && (((DateTime.Compare(r.startDay, DateTime.Parse(bookRoom.startDay)) >= 0) && (DateTime.Compare(r.startDay, DateTime.Parse(bookRoom.endDate)) <= 0)) || ((DateTime.Compare(DateTime.Parse(bookRoom.startDay), r.startDay) >= 0) && (DateTime.Compare(DateTime.Parse(bookRoom.startDay), (DateTime)r.endDate) <= 0)))
-        //                && (((TimeSpan.Compare(r.startTime, TimeSpan.Parse(bookRoom.startTime)) >= 0) && (TimeSpan.Compare(r.startTime, TimeSpan.Parse(bookRoom.endTime)) <= 0)) || ((TimeSpan.Compare(TimeSpan.Parse(bookRoom.startTime), r.startTime) >= 0) && (TimeSpan.Compare(TimeSpan.Parse(bookRoom.startTime), r.endTime) <= 0))))
-        //                select r;
-        //    if ((DateTime.Compare(DateTime.Parse(bookRoom.startDay), DateTime.Parse(bookRoom.endDate)) > 0) || (TimeSpan.Compare(TimeSpan.Parse(bookRoom.startTime), TimeSpan.Parse(bookRoom.endTime)) > 0) || (DateTime.Compare(DateTime.Parse(bookRoom.startDay), DateTime.Now) < 0))
-        //    {
-        //        massge = "Invalid date and time ";
-        //    }
-        //    else
-        //    {
-        //        if (check.Count() > 0)
-        //        {
-        //            massge = "Duplicate date and time";
-        //        }
-        //        else
-        //        {
-        //            if ((userRole == "User" && st == "Processing") || (userRole == "Admin"))
-        //            {
-        //                boookRoomEdit.personBookingId = bookRoom.personBookingId;
-        //                boookRoomEdit.personalApprovedId = bookRoom.personalApprovedId;
-        //                boookRoomEdit.roomId = bookRoom.roomId;
-        //                boookRoomEdit.issue = bookRoom.issue;
-        //                boookRoomEdit.startDay = DateTime.Parse(bookRoom.startDay);
-        //                boookRoomEdit.endDate = DateTime.Parse(bookRoom.endDate);
-        //                boookRoomEdit.startTime = TimeSpan.Parse(bookRoom.startTime);
-        //                boookRoomEdit.endTime = TimeSpan.Parse(bookRoom.endTime);
-        //                boookRoomEdit.createdTime = DateTime.Parse(bookRoom.createdTime);
-        //                boookRoomEdit.updatedTime = DateTime.Parse(bookRoom.updatedTime);
-        //                boookRoomEdit.status = bookRoom.status;
-        //                await bookRoomRepository.UpdateAsync(boookRoomEdit);
-        //                massge = "Update successful";
-        //            }
-        //            else
-        //            {
-        //                massge = "Update failed";
-        //            }
-        //        }
-        //    }
-        //    return Ok(massge);
-        //}
+        [Authorize(Roles = "User")]
+        [HttpPut("User/{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] BookRoomViewModel bookRoom)
+        {
+            string massge = "";
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            var userRole = claimsIdentity.FindFirst(ClaimTypes.Role)?.Value;
+            var boookRoomEdit = myDbContext.BookRooms.Where(b => b.Id == id).FirstOrDefault();
+            string st = bookRoom.status;
+            var check = from r in myDbContext.BookRooms
+                        where ((r.roomId == bookRoom.roomId)
+                        && (r.Id != id)
+                        && (((DateTime.Compare(r.startDay, DateTime.Parse(bookRoom.startDay)) >= 0) && (DateTime.Compare(r.startDay, DateTime.Parse(bookRoom.endDate)) <= 0)) || ((DateTime.Compare(DateTime.Parse(bookRoom.startDay), r.startDay) >= 0) && (DateTime.Compare(DateTime.Parse(bookRoom.startDay), (DateTime)r.endDate) <= 0)))
+                        && (((TimeSpan.Compare(r.startTime, TimeSpan.Parse(bookRoom.startTime)) >= 0) && (TimeSpan.Compare(r.startTime, TimeSpan.Parse(bookRoom.endTime)) <= 0)) || ((TimeSpan.Compare(TimeSpan.Parse(bookRoom.startTime), r.startTime) >= 0) && (TimeSpan.Compare(TimeSpan.Parse(bookRoom.startTime), r.endTime) <= 0))))
+                        select r;
+            if ((DateTime.Compare(DateTime.Parse(bookRoom.startDay), DateTime.Parse(bookRoom.endDate)) > 0) || (TimeSpan.Compare(TimeSpan.Parse(bookRoom.startTime), TimeSpan.Parse(bookRoom.endTime)) > 0) || (DateTime.Compare(DateTime.Parse(bookRoom.startDay), DateTime.Now) < 0))
+            {
+                massge = "Invalid date and time ";
+            }
+            else
+            {
+                if (check.Count() > 0)
+                {
+                    massge = "Duplicate date and time";
+                }
+                else
+                {
+                    if ((userRole == "User" && st == "Processing") || (userRole == "Admin"))
+                    {
+                        boookRoomEdit.personBookingId = bookRoom.personBookingId;
+                        boookRoomEdit.personalApprovedId = bookRoom.personalApprovedId;
+                        boookRoomEdit.roomId = bookRoom.roomId;
+                        boookRoomEdit.issue = bookRoom.issue;
+                        boookRoomEdit.startDay = DateTime.Parse(bookRoom.startDay);
+                        boookRoomEdit.endDate = DateTime.Parse(bookRoom.endDate);
+                        boookRoomEdit.startTime = TimeSpan.Parse(bookRoom.startTime);
+                        boookRoomEdit.endTime = TimeSpan.Parse(bookRoom.endTime);
+                        boookRoomEdit.createdTime = DateTime.Parse(bookRoom.createdTime);
+                        boookRoomEdit.updatedTime = DateTime.Parse(bookRoom.updatedTime);
+                        boookRoomEdit.status = bookRoom.status;
+                        await bookRoomRepository.UpdateAsync(boookRoomEdit);
+                        massge = "Update successful";
+                    }
+                    else
+                    {
+                        massge = "Update failed";
+                    }
+                }
+            }
+            return Ok(massge);
+        }
 
-
-        [HttpDelete("{id}")]
+      [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(BookRoom bookRoom)
         {
             await bookRoomRepository.DeleteAsync(bookRoom);
             return Ok(bookRoom.Id);
-        }
-
-      
+        }   
     }
-
-
-
-
 }
 
