@@ -71,7 +71,42 @@ namespace ProjectTeamTMA.Controllers
         }
         // status = Accept and Reject
 
-      
+        [HttpGet("bookRoomOfWeeb")]
+        public async Task<ActionResult<IEnumerable<BookRoom>>> BookRoomOfWeek()
+        {
+            DateTime dt = DateTime.Now;
+            var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+            var diff = dt.DayOfWeek - culture.DateTimeFormat.FirstDayOfWeek;
+            if (diff < 0)
+                diff += 7;
+            DateTime startDayOfWeeb = dt.AddDays(-diff + 1).Date;
+            DateTime lastDayOfWeeb = startDayOfWeeb.AddDays(6);
+
+            var model1 = from b in myDbContext.BookRooms
+                         where ((DateTime.Compare(startDayOfWeeb, b.startDay) < 0) && (DateTime.Compare(lastDayOfWeeb, b.startDay) > 0))
+                         select b;
+            var model2 = new List<BookRoomViewModel>();
+            foreach (var model in model1)
+            {
+                BookRoomViewModel book = new BookRoomViewModel()
+                {
+                    Id = model.Id,
+                    personBookingId = model.personBookingId,
+                    personalApprovedId = model.personalApprovedId,
+                    roomId = model.roomId,
+                    issue = model.issue,
+                    startDay = model.startDay.ToString(),
+                    endDate = model.endDate.ToString(),
+                    startTime = model.startTime.ToString(),
+                    endTime = model.endTime.ToString(),
+                    createdTime = model.createdTime.ToString(),
+                    updatedTime = model.updatedTime.ToString()
+                };
+                model2.Add(book);
+            }
+            return Ok(model2);
+        }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(BookRoom bookRoom)
