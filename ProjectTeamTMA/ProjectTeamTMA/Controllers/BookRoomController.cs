@@ -57,37 +57,10 @@ namespace ProjectTeamTMA.Controllers
 
 
 
-        //[Authorize(Roles = "User,Admin")]
-        [HttpPost("BookRoom1")]
-        public async Task<IActionResult> Create1(BookRoomViewModel model)
-        {
-            string massge = "";
-            BookRoom bookRoom = new BookRoom();
-            var startDayBr = DateTime.Parse(model.startDay);
-            var endDateBr = DateTime.Parse(model.endDate);
 
-            if (startDayBr > endDateBr)
-            {          
-                massge = "Please enter the Day time";          
-            }
-            else
-            {
-                bookRoom.personBookingId = model.personBookingId;
-                bookRoom.roomId = model.roomId;
-                bookRoom.issue = model.issue;
-                bookRoom.startDay = DateTime.Parse(model.startDay);
-                bookRoom.endDate = DateTime.Parse(model.endDate);
-                bookRoom.startTime = TimeSpan.Parse(model.startTime);
-                bookRoom.endTime = TimeSpan.Parse(model.endTime);
-                bookRoom.createdTime = DateTime.Parse(model.createdTime);
-                bookRoom.updatedTime = DateTime.Parse(model.updatedTime);
-            }
-            await bookRoomRepository.AddAsync(bookRoom);
-            return Ok(bookRoom.Id);
-        }
 
-        //[Authorize(Roles = "User,Admin")]
-        [HttpPost("BookRoom2")]
+        [Authorize(Roles = "User,Admin")]
+        [HttpPost]
         public async Task<IActionResult> Create2([FromBody] BookRoomViewModel model)
         {
             string massge = "";
@@ -131,33 +104,14 @@ namespace ProjectTeamTMA.Controllers
                     bookRoom.endTime = TimeSpan.Parse(model.endTime);
                     bookRoom.createdTime = DateTime.Parse(model.createdTime);
                     bookRoom.updatedTime = DateTime.Parse(model.updatedTime);
+                    massge = "Create successful";
                 }
             }
             await bookRoomRepository.AddAsync(bookRoom);
-            return Ok(bookRoom.Id);
+            return Ok(massge);
         }
 
-        //[Authorize(Roles = "Admin")]
-        [HttpPut("Admin/{id}")]
-        public async Task<IActionResult> BookRoomApproved(BookRoomViewModel model, Guid id)
-        {
-            var bookRoom = await myDbContext.BookRooms.FindAsync(id);
-            bookRoom.Id = model.Id;
-            bookRoom.personalApprovedId = model.personalApprovedId;
-            bookRoom.personBookingId = model.personBookingId;
-            bookRoom.roomId = model.roomId;
-            bookRoom.issue = model.issue;
-            bookRoom.status = model.status= "Accept";          
-            bookRoom.startDay = DateTime.Parse(model.startDay);
-            bookRoom.endDate = DateTime.Parse(model.endDate);
-            bookRoom.startTime = TimeSpan.Parse(model.startTime);
-            bookRoom.endTime = TimeSpan.Parse(model.endTime);
-            bookRoom.createdTime = DateTime.Parse(model.createdTime);
-            bookRoom.updatedTime = DateTime.Parse(model.updatedTime);
-            await bookRoomRepository.UpdateAsync(bookRoom);
-            return Ok(bookRoom);
-        }
-        // status = Accept and Reject
+      
 
         [Authorize(Roles = "User,Admin")]
         [HttpPut("{id}")]
@@ -232,6 +186,57 @@ namespace ProjectTeamTMA.Controllers
             await bookRoomRepository.DeleteAsync(bookRoom);
             return Ok(bookRoom.Id);
         }
+
+        ////[Authorize(Roles = "User,Admin")]
+        //[HttpPost("BookRoom1")]
+        //public async Task<IActionResult> Create1(BookRoomViewModel model)
+        //{
+        //    string massge = "";
+        //    BookRoom bookRoom = new BookRoom();
+        //    var startDayBr = DateTime.Parse(model.startDay);
+        //    var endDateBr = DateTime.Parse(model.endDate);
+
+        //    if (startDayBr > endDateBr)
+        //    {
+        //        massge = "Please enter the Day time";
+        //    }
+        //    else
+        //    {
+        //        bookRoom.personBookingId = model.personBookingId;
+        //        bookRoom.roomId = model.roomId;
+        //        bookRoom.issue = model.issue;
+        //        bookRoom.startDay = DateTime.Parse(model.startDay);
+        //        bookRoom.endDate = DateTime.Parse(model.endDate);
+        //        bookRoom.startTime = TimeSpan.Parse(model.startTime);
+        //        bookRoom.endTime = TimeSpan.Parse(model.endTime);
+        //        bookRoom.createdTime = DateTime.Parse(model.createdTime);
+        //        bookRoom.updatedTime = DateTime.Parse(model.updatedTime);
+        //    }
+        //    await bookRoomRepository.AddAsync(bookRoom);
+        //    return Ok(bookRoom.Id);
+        //}
+
+        ////[Authorize(Roles = "Admin")]
+        //[HttpPut("Admin/{id}")]
+        //public async Task<IActionResult> BookRoomApproved(BookRoomViewModel model, Guid id)
+        //{
+        //    var bookRoom = await myDbContext.BookRooms.FindAsync(id);
+        //    bookRoom.Id = model.Id;
+        //    bookRoom.personalApprovedId = model.personalApprovedId;
+        //    bookRoom.personBookingId = model.personBookingId;
+        //    bookRoom.roomId = model.roomId;
+        //    bookRoom.issue = model.issue;
+        //    bookRoom.status = model.status = "Accept";
+        //    bookRoom.startDay = DateTime.Parse(model.startDay);
+        //    bookRoom.endDate = DateTime.Parse(model.endDate);
+        //    bookRoom.startTime = TimeSpan.Parse(model.startTime);
+        //    bookRoom.endTime = TimeSpan.Parse(model.endTime);
+        //    bookRoom.createdTime = DateTime.Parse(model.createdTime);
+        //    bookRoom.updatedTime = DateTime.Parse(model.updatedTime);
+        //    await bookRoomRepository.UpdateAsync(bookRoom);
+        //    return Ok(bookRoom);
+        //}
+        //// status = Accept and Reject
 
         //[Authorize(Roles = "User")]
         //[HttpPut("User/{id}")]
