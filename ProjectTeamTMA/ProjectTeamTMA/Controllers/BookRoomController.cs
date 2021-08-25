@@ -56,11 +56,39 @@ namespace ProjectTeamTMA.Controllers
         }
 
 
+        [Authorize(Roles = "User,Admin")]
+        [HttpPost("BookRoom1")]
+        public async Task<IActionResult> Create1(BookRoomViewModel model)
+        {
+            string massge = "";
+            BookRoom bookRoom = new BookRoom();
+            var startDayBr = DateTime.Parse(model.startDay);
+            var endDateBr = DateTime.Parse(model.endDate);
 
+            if (startDayBr > endDateBr)
+            {
+                massge = "Please enter the Day time";
+            }
+            else
+            {
+                bookRoom.personBookingId = model.personBookingId;
+                bookRoom.roomId = model.roomId;
+                bookRoom.issue = model.issue;
+                bookRoom.startDay = DateTime.Parse(model.startDay);
+                bookRoom.endDate = DateTime.Parse(model.endDate);
+                bookRoom.startTime = TimeSpan.Parse(model.startTime);
+                bookRoom.endTime = TimeSpan.Parse(model.endTime);
+                bookRoom.createdTime = DateTime.Parse(model.createdTime);
+                bookRoom.updatedTime = DateTime.Parse(model.updatedTime);
+                massge = "Create successful";
+            }
+            await bookRoomRepository.AddAsync(bookRoom);
+            return Ok(massge);
+        }
 
 
         [Authorize(Roles = "User,Admin")]
-        [HttpPost]
+        [HttpPost("BookRoom2")]
         public async Task<IActionResult> Create2([FromBody] BookRoomViewModel model)
         {
             string massge = "";
